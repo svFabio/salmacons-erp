@@ -21,5 +21,6 @@ export class BrandService {
     root.style.setProperty('--c-primary-hover', colors.primaryHover);
     root.style.setProperty('--c-accent', colors.accent);
     root.style.setProperty('--c-accent-hover', colors.accentHover);
+    root.style.setProperty('--c-dark', colors.dark);
   }
 }

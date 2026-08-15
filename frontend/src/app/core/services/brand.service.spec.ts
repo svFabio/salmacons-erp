@@ -29,5 +29,6 @@ describe('BrandService', () => {
     expect(root.style.getPropertyValue('--c-primary-hover')).toBe(environment.brand.colors.primaryHover);
     expect(root.style.getPropertyValue('--c-accent')).toBe(environment.brand.colors.accent);
     expect(root.style.getPropertyValue('--c-accent-hover')).toBe(environment.brand.colors.accentHover);
+    expect(root.style.getPropertyValue('--c-dark')).toBe(environment.brand.colors.dark);
   });
 });
