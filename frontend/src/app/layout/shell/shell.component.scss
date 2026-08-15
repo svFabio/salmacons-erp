@@ -1,54 +1,161 @@
-.shell-container {
+.salma-app {
   display: flex;
   height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--c-bg);
 }
 
-.sidebar {
-  width: 250px;
-  background-color: #f4f4f4;
-  padding: 20px;
+/* ==========================================================================
+   Sidebar
+   ========================================================================== */
+.salma-sidebar {
+  width: 280px;
+  background-color: var(--c-surface);
+  border-right: 1px solid var(--c-border);
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
+  z-index: 10;
 }
 
-.logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
+.sidebar-header {
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--c-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--c-primary), var(--c-accent));
+      border-radius: var(--radius-md);
+    }
+    
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--c-primary);
+    }
+  }
+  
+  .user-role-badge {
+    align-self: flex-start;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    background-color: var(--c-surface-hover);
+    color: var(--c-text-muted);
+    letter-spacing: 0.05em;
+  }
 }
 
-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  flex-grow: 1;
-}
-
-nav li {
-  margin-bottom: 10px;
-}
-
-nav a {
-  text-decoration: none;
-  color: #333;
-  display: block;
-  padding: 8px;
-  border-radius: 4px;
-}
-
-nav a.active {
-  background-color: #ddd;
-  font-weight: bold;
-}
-
-.logout-btn {
-  margin-top: auto;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.content {
-  flex-grow: 1;
-  padding: 20px;
+.sidebar-nav {
+  flex: 1;
+  padding: var(--space-6) var(--space-4);
   overflow-y: auto;
+  
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  
+  a {
+    display: flex;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    color: var(--c-text-muted);
+    font-weight: 500;
+    transition: all var(--transition-fast);
+    
+    &:hover {
+      background-color: var(--c-surface-hover);
+      color: var(--c-text-main);
+    }
+    
+    &.active {
+      background-color: rgba(37, 99, 235, 0.05); /* very light accent */
+      color: var(--c-accent);
+      font-weight: 600;
+    }
+  }
+}
+
+.sidebar-footer {
+  padding: var(--space-6);
+  border-top: 1px solid var(--c-border);
+  
+  .logout-btn {
+    width: 100%;
+    border-color: transparent;
+    background-color: var(--c-surface-hover);
+    
+    &:hover {
+      background-color: #fee2e2;
+      color: var(--c-error);
+    }
+  }
+}
+
+/* ==========================================================================
+   Main Wrapper & Topbar
+   ========================================================================== */
+.salma-main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.salma-topbar {
+  height: 73px; /* Matches sidebar header height closely */
+  background-color: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-8);
+  flex-shrink: 0;
+  
+  .page-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--c-text-main);
+  }
+  
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      background-color: var(--c-surface-hover);
+      border: 1px solid var(--c-border);
+    }
+  }
+}
+
+.salma-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-8);
+  
+  .content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 }

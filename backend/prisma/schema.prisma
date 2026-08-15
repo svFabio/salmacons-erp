@@ -45,6 +45,7 @@ model Inmueble {
   updatedAt       DateTime @updatedAt      @map("updated_at")
 
   clientes ClienteInmueble[]
+  tramites Tramite[]
 
   @@map("inmuebles")
 }
@@ -88,6 +89,8 @@ model Usuario {
   createdAt    DateTime   @default(now()) @map("created_at")
   updatedAt    DateTime   @updatedAt      @map("updated_at")
 
+  historialTramites HistorialTramite[]
+
   @@map("usuarios")
 }
 
@@ -102,4 +105,88 @@ enum RolClienteInmueble {
   COPROPIETARIO
 
   @@map("rol_cliente_inmueble")
+}
+
+// ─────────────────────────────────────────────
+// TRÁMITES Y MOTOR DE ESTADOS
+// ─────────────────────────────────────────────
+
+enum AreaTramite {
+  LEGAL
+  TECNICA
+
+  @@map("area_tramite")
+}
+
+model TipoTramite {
+  id          String      @id @default(uuid())
+  nombre      String
+  area        AreaTramite
+  descripcion String?
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt      @map("updated_at")
+
+  pasos    PasoTipoTramite[]
+  tramites Tramite[]
+
+  @@map("tipos_tramite")
+}
+
+model PasoTipoTramite {
+  id                String   @id @default(uuid())
+  tipoTramiteId     String   @map("tipo_tramite_id")
+  nombreEstado      String   @map("nombre_estado")
+  orden             Int
+  requiereDocumento Boolean  @default(false) @map("requiere_documento")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt      @map("updated_at")
+
+  tipoTramite TipoTramite @relation(fields: [tipoTramiteId], references: [id], onDelete: Cascade)
+
+  @@unique([tipoTramiteId, orden])
+  @@map("pasos_tipo_tramite")
+}
+
+model Tramite {
+  id             String   @id @default(uuid())
+  inmuebleId     String   @map("inmueble_id")
+  tipoTramiteId  String   @map("tipo_tramite_id")
+  estadoActual   String   @map("estado_actual")
+  motivoBloqueo  String?  @map("motivo_bloqueo")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt      @map("updated_at")
+
+  inmueble    Inmueble      @relation(fields: [inmuebleId], references: [id], onDelete: Cascade)
+  tipoTramite TipoTramite   @relation(fields: [tipoTramiteId], references: [id], onDelete: Restrict)
+  historial   HistorialTramite[]
+  documentos  DocumentoTramite[]
+
+  @@map("tramites")
+}
+
+model HistorialTramite {
+  id             String   @id @default(uuid())
+  tramiteId      String   @map("tramite_id")
+  usuarioId      String   @map("usuario_id")
+  estadoAnterior String?  @map("estado_anterior")
+  estadoNuevo    String   @map("estado_nuevo")
+  observacion    String?
+  fecha          DateTime @default(now())
+
+  tramite Tramite @relation(fields: [tramiteId], references: [id], onDelete: Cascade)
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Restrict)
+
+  @@map("historial_tramites")
+}
+
+model DocumentoTramite {
+  id            String   @id @default(uuid())
+  tramiteId     String   @map("tramite_id")
+  cloudinaryUrl String   @map("cloudinary_url")
+  tipoDocumento String   @map("tipo_documento")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  tramite Tramite @relation(fields: [tramiteId], references: [id], onDelete: Cascade)
+
+  @@map("documentos_tramite")
 }

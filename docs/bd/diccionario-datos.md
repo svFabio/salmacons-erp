@@ -1,94 +1,126 @@
-# Diccionario de Datos — SALMA
-
-> Actualizado: 2026-08-14 | Migración: `20260815033841_init`
-
----
+# Diccionario de Datos
 
 ## Tabla: `clientes`
 
-Directorio maestro de personas físicas o jurídicas que tienen uno o más inmuebles en el sistema.
+Directorio maestro de clientes.
 
-| Columna | Tipo | Nullable | Clave | Descripción |
-|---|---|---|---|---|
-| `id` | `uuid` | NO | PK | Identificador único (UUID v4) |
-| `nombres` | `text` | NO | — | Nombre(s) del cliente |
-| `apellidos` | `text` | NO | — | Apellido(s) del cliente |
-| `ci` | `text` | NO | UK | Cédula de identidad (único en el sistema) |
-| `email` | `text` | SÍ | UK | Correo electrónico (único si se provee) |
-| `telefono` | `text` | SÍ | — | Número de teléfono de contacto |
-| `direccion` | `text` | SÍ | — | Dirección del cliente (no del inmueble) |
-| `created_at` | `timestamptz` | NO | — | Fecha/hora de creación del registro |
-| `updated_at` | `timestamptz` | NO | — | Fecha/hora de última modificación |
-
----
+| Columna    | Tipo     | Nullable | Relación | Descripción                  |
+| ---------- | -------- | -------- | -------- | ---------------------------- |
+| id         | String   | No       |          | Identificador único (UUID).  |
+| nombres    | String   | No       |          | Nombres del cliente.         |
+| apellidos  | String   | No       |          | Apellidos del cliente.       |
+| ci         | String   | No       |          | Cédula de identidad (único). |
+| email      | String   | Sí       |          | Correo electrónico.          |
+| telefono   | String   | Sí       |          | Teléfono de contacto.        |
+| direccion  | String   | Sí       |          | Dirección.                   |
+| created_at | DateTime | No       |          | Fecha de creación.           |
+| updated_at | DateTime | No       |          | Fecha de actualización.      |
 
 ## Tabla: `inmuebles`
 
-Registro de propiedades que pueden tener uno o más clientes asociados y uno o más trámites activos.
+Inmuebles registrados en el sistema.
 
-| Columna | Tipo | Nullable | Clave | Descripción |
-|---|---|---|---|---|
-| `id` | `uuid` | NO | PK | Identificador único (UUID v4) |
-| `matricula` | `text` | SÍ | UK | Número de matrícula del registro de propiedad |
-| `codigo_catastral` | `text` | SÍ | UK | Código catastral municipal |
-| `direccion` | `text` | NO | — | Dirección física del inmueble |
-| `superficie` | `decimal(10,2)` | SÍ | — | Superficie en metros cuadrados |
-| `descripcion` | `text` | SÍ | — | Descripción libre del inmueble |
-| `created_at` | `timestamptz` | NO | — | Fecha/hora de creación del registro |
-| `updated_at` | `timestamptz` | NO | — | Fecha/hora de última modificación |
-
----
+| Columna          | Tipo     | Nullable | Relación | Descripción                 |
+| ---------------- | -------- | -------- | -------- | --------------------------- |
+| id               | String   | No       |          | Identificador único (UUID). |
+| matricula        | String   | Sí       |          | Matrícula del inmueble.     |
+| codigo_catastral | String   | Sí       |          | Código catastral.           |
+| direccion        | String   | No       |          | Dirección del inmueble.     |
+| superficie       | Decimal  | Sí       |          | Superficie en m2.           |
+| descripcion      | String   | Sí       |          | Descripción.                |
+| created_at       | DateTime | No       |          | Fecha de creación.          |
+| updated_at       | DateTime | No       |          | Fecha de actualización.     |
 
 ## Tabla: `cliente_inmueble`
 
-Tabla intermedia explícita para la relación muchos-a-muchos entre `clientes` e `inmuebles`.
-Permite representar herencias, copropiedades y representaciones legales con el tipo de rol.
+Relación muchos-a-muchos entre clientes e inmuebles.
 
-| Columna | Tipo | Nullable | Clave | Descripción |
-|---|---|---|---|---|
-| `cliente_id` | `uuid` | NO | PK, FK → `clientes.id` | Referencia al cliente |
-| `inmueble_id` | `uuid` | NO | PK, FK → `inmuebles.id` | Referencia al inmueble |
-| `rol` | `rol_cliente_inmueble` | NO | — | Rol del cliente: `PROPIETARIO`, `HEREDERO`, `REPRESENTANTE`, `COPROPIETARIO` |
-| `created_at` | `timestamptz` | NO | — | Fecha de asociación |
-
-> **Cascade**: si se elimina un `cliente` o un `inmueble`, se eliminan sus registros en esta tabla. No se eliminan el cliente ni el inmueble del otro lado.
-
----
-
-## Enum: `rol_cliente_inmueble`
-
-| Valor | Descripción |
-|---|---|
-| `PROPIETARIO` | Dueño legal único del inmueble |
-| `HEREDERO` | Heredero en proceso sucesorio |
-| `REPRESENTANTE` | Actúa en representación del propietario |
-| `COPROPIETARIO` | Comparte la propiedad con otros clientes |
-
----
+| Columna     | Tipo     | Nullable | Relación         | Descripción                                        |
+| ----------- | -------- | -------- | ---------------- | -------------------------------------------------- |
+| cliente_id  | String   | No       | FK a `clientes`  | ID del cliente.                                    |
+| inmueble_id | String   | No       | FK a `inmuebles` | ID del inmueble.                                   |
+| rol         | Enum     | No       |                  | Rol del cliente en el inmueble (PROPIETARIO, etc). |
+| created_at  | DateTime | No       |                  | Fecha de creación.                                 |
 
 ## Tabla: `usuarios`
 
-Registro de usuarios del sistema para control de acceso (RBAC).
+Usuarios del sistema con acceso (RBAC).
 
-| Columna | Tipo | Nullable | Clave | Descripción |
-|---|---|---|---|---|
-| `id` | `uuid` | NO | PK | Identificador único (UUID v4) |
-| `email` | `text` | NO | UK | Correo electrónico para inicio de sesión |
-| `password_hash` | `text` | NO | — | Hash de la contraseña |
-| `nombre` | `text` | NO | — | Nombre del usuario |
-| `apellido` | `text` | NO | — | Apellido del usuario |
-| `rol` | `rol_usuario` | NO | — | Rol del usuario (`ADMIN`, `ABOGADO`, `ARQUITECTO`, `CLIENTE`) |
-| `activo` | `boolean` | NO | — | Si el usuario puede iniciar sesión |
-| `created_at` | `timestamptz` | NO | — | Fecha/hora de creación |
-| `updated_at` | `timestamptz` | NO | — | Fecha/hora de modificación |
+| Columna       | Tipo     | Nullable | Relación | Descripción                            |
+| ------------- | -------- | -------- | -------- | -------------------------------------- |
+| id            | String   | No       |          | Identificador único (UUID).            |
+| email         | String   | No       |          | Correo del usuario.                    |
+| password_hash | String   | No       |          | Hash de contraseña.                    |
+| nombre        | String   | No       |          | Nombre del usuario.                    |
+| apellido      | String   | No       |          | Apellido del usuario.                  |
+| rol           | Enum     | No       |          | Rol del usuario (ADMIN, ABOGADO, etc). |
+| activo        | Boolean  | No       |          | Estado activo/inactivo.                |
+| created_at    | DateTime | No       |          | Fecha de creación.                     |
+| updated_at    | DateTime | No       |          | Fecha de actualización.                |
 
----
+## Tabla: `tipos_tramite`
 
-## Enum: `rol_usuario`
+Tipos de trámites disponibles en el sistema.
 
-| Valor | Descripción |
-|---|---|
-| `ADMIN` | Administrador total del sistema |
-| `ABOGADO` | Encargado de trámites legales |
-| `ARQUITECTO` | Encargado de trámites técnicos |
-| `CLIENTE` | Portal del cliente (solo lectura) |
+| Columna     | Tipo     | Nullable | Relación | Descripción                 |
+| ----------- | -------- | -------- | -------- | --------------------------- |
+| id          | String   | No       |          | Identificador único (UUID). |
+| nombre      | String   | No       |          | Nombre del tipo de trámite. |
+| area        | Enum     | No       |          | Área legal o técnica.       |
+| descripcion | String   | Sí       |          | Descripción opcional.       |
+| created_at  | DateTime | No       |          | Fecha de creación.          |
+| updated_at  | DateTime | No       |          | Fecha de actualización.     |
+
+## Tabla: `pasos_tipo_tramite`
+
+Pasos configurables para el motor de estados de cada tipo de trámite.
+
+| Columna            | Tipo     | Nullable | Relación             | Descripción                              |
+| ------------------ | -------- | -------- | -------------------- | ---------------------------------------- |
+| id                 | String   | No       |                      | Identificador único (UUID).              |
+| tipo_tramite_id    | String   | No       | FK a `tipos_tramite` | ID del tipo de trámite.                  |
+| nombre_estado      | String   | No       |                      | Nombre del estado en este paso.          |
+| orden              | Int      | No       |                      | Orden del paso en el flujo.              |
+| requiere_documento | Boolean  | No       |                      | Indica si el paso exige subir documento. |
+| created_at         | DateTime | No       |                      | Fecha de creación.                       |
+| updated_at         | DateTime | No       |                      | Fecha de actualización.                  |
+
+## Tabla: `tramites`
+
+Instancias de trámites asociados a inmuebles.
+
+| Columna         | Tipo     | Nullable | Relación             | Descripción                                  |
+| --------------- | -------- | -------- | -------------------- | -------------------------------------------- |
+| id              | String   | No       |                      | Identificador único (UUID).                  |
+| inmueble_id     | String   | No       | FK a `inmuebles`     | ID del inmueble al que pertenece el trámite. |
+| tipo_tramite_id | String   | No       | FK a `tipos_tramite` | ID del tipo de trámite.                      |
+| estado_actual   | String   | No       |                      | Estado actual del trámite.                   |
+| motivo_bloqueo  | String   | Sí       |                      | Razón del bloqueo, si aplica.                |
+| created_at      | DateTime | No       |                      | Fecha de inicio del trámite.                 |
+| updated_at      | DateTime | No       |                      | Última fecha de actualización.               |
+
+## Tabla: `historial_tramites`
+
+Historial de cambios de estado de un trámite (motor de estados).
+
+| Columna         | Tipo     | Nullable | Relación        | Descripción                    |
+| --------------- | -------- | -------- | --------------- | ------------------------------ |
+| id              | String   | No       |                 | Identificador único (UUID).    |
+| tramite_id      | String   | No       | FK a `tramites` | ID del trámite.                |
+| usuario_id      | String   | No       | FK a `usuarios` | Usuario que realizó el cambio. |
+| estado_anterior | String   | Sí       |                 | Estado antes del cambio.       |
+| estado_nuevo    | String   | No       |                 | Estado asignado.               |
+| observacion     | String   | Sí       |                 | Nota u observación.            |
+| fecha           | DateTime | No       |                 | Fecha del cambio.              |
+
+## Tabla: `documentos_tramite`
+
+Referencias a documentos subidos a Cloudinary.
+
+| Columna        | Tipo     | Nullable | Relación        | Descripción                     |
+| -------------- | -------- | -------- | --------------- | ------------------------------- |
+| id             | String   | No       |                 | Identificador único (UUID).     |
+| tramite_id     | String   | No       | FK a `tramites` | ID del trámite.                 |
+| cloudinary_url | String   | No       |                 | URL de Cloudinary.              |
+| tipo_documento | String   | No       |                 | Tipo o categoría del documento. |
+| created_at     | DateTime | No       |                 | Fecha de subida.                |

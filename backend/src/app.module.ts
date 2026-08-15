@@ -3,19 +3,21 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
-import { UsuariosModule } from './usuarios/usuarios.module';
-import { AuthModule } from './auth/auth.module';
 import { ClientesModule } from './clientes/clientes.module';
 import { InmueblesModule } from './inmuebles/inmuebles.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
+import { AuthModule } from './auth/auth.module';
+import { TramitesModule } from './tramites/tramites.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    UsuariosModule,
-    AuthModule,
     PrismaModule,
     ClientesModule,
     InmueblesModule,
+    UsuariosModule,
+    AuthModule,
+    TramitesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

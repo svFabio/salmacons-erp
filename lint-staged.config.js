@@ -1,9 +1,9 @@
 export default {
   'backend/src/**/*.ts': [
-    () => 'cd backend && pnpm run lint',
+    () => 'pnpm --dir backend run lint',
   ],
   'frontend/src/**/*.ts': [
-    () => 'cd frontend && pnpm run lint',
+    () => 'pnpm --dir frontend run lint',
   ],
-  '*.{json,md,yaml,yml}': ['prettier --write'],
+  '*.{json,md,yaml,yml}': ['npx prettier --write'],
 };

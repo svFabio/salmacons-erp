@@ -1,7 +1,14 @@
-<div class="shell-container">
-  <aside class="sidebar">
-    <div class="logo">SALMA</div>
-    <nav>
+<div class="salma-app">
+  <aside class="salma-sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="logo-icon"></span>
+        <span class="logo-text">SALMA</span>
+      </div>
+      <div class="user-role-badge">{{ role }}</div>
+    </div>
+    
+    <nav class="sidebar-nav">
       <ul *ngIf="role === 'ADMIN'">
         <li><a routerLink="/app/clientes" routerLinkActive="active">Clientes</a></li>
         <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles</a></li>
@@ -9,20 +16,36 @@
         <li><a routerLink="/app/usuarios" routerLinkActive="active">Usuarios</a></li>
       </ul>
       <ul *ngIf="role === 'ABOGADO'">
-        <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles</a></li>
+        <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles Asignados</a></li>
         <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites Legales</a></li>
       </ul>
       <ul *ngIf="role === 'ARQUITECTO'">
-        <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles</a></li>
+        <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles Asignados</a></li>
         <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites Técnicos</a></li>
       </ul>
       <ul *ngIf="role === 'CLIENTE'">
         <li><a routerLink="/app/inmuebles" routerLinkActive="active">Mis Inmuebles</a></li>
       </ul>
     </nav>
-    <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+    
+    <div class="sidebar-footer">
+      <button class="btn btn-outline logout-btn" (click)="logout()">Cerrar sesión</button>
+    </div>
   </aside>
-  <main class="content">
-    <router-outlet></router-outlet>
-  </main>
+  
+  <div class="salma-main-wrapper">
+    <header class="salma-topbar">
+      <h1 class="page-title">Panel de Control</h1>
+      <!-- User profile mock -->
+      <div class="user-profile">
+        <div class="avatar"></div>
+      </div>
+    </header>
+    
+    <main class="salma-content">
+      <div class="content-container">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
 </div>
