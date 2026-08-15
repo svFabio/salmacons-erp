@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+
+# Environment — NEVER commit real .env files
+.env
+.env.local
+.env.*.local
+
+# Prisma
+prisma/migrations/*.sql.bak
+
+# Tests / coverage
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

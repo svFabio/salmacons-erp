@@ -1,0 +1,82 @@
+// Prisma schema — SALMA
+// Datasource connection via DATABASE_URL env var (never hardcoded)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// CLIENTE
+// ─────────────────────────────────────────────
+
+model Cliente {
+  id        String   @id @default(uuid())
+  nombres   String
+  apellidos String
+  ci        String   @unique
+  email     String?  @unique
+  telefono  String?
+  direccion String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  inmuebles ClienteInmueble[]
+
+  @@map("clientes")
+}
+
+// ─────────────────────────────────────────────
+// INMUEBLE
+// ─────────────────────────────────────────────
+
+model Inmueble {
+  id              String   @id @default(uuid())
+  matricula       String?  @unique
+  codigoCatastral String?  @unique @map("codigo_catastral")
+  direccion       String
+  superficie      Decimal? @db.Decimal(10, 2)
+  descripcion     String?
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt      @map("updated_at")
+
+  clientes ClienteInmueble[]
+
+  @@map("inmuebles")
+}
+
+// ─────────────────────────────────────────────
+// TABLA INTERMEDIA EXPLICITA M:N Cliente-Inmueble
+// Explícita (no implicit M:N de Prisma) para poder
+// agregar columnas futuras como porcentaje_propiedad
+// ─────────────────────────────────────────────
+
+model ClienteInmueble {
+  clienteId  String             @map("cliente_id")
+  inmuebleId String             @map("inmueble_id")
+  rol        RolClienteInmueble @default(PROPIETARIO)
+  createdAt  DateTime           @default(now()) @map("created_at")
+
+  cliente  Cliente  @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  inmueble Inmueble @relation(fields: [inmuebleId], references: [id], onDelete: Cascade)
+
+  @@id([clienteId, inmuebleId])
+  @@map("cliente_inmueble")
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+enum RolClienteInmueble {
+  PROPIETARIO
+  HEREDERO
+  REPRESENTANTE
+  COPROPIETARIO
+
+  @@map("rol_cliente_inmueble")
+}
