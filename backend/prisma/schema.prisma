@@ -68,6 +68,29 @@ model ClienteInmueble {
   @@map("cliente_inmueble")
 }
 
+enum RolUsuario {
+  ADMIN
+  ABOGADO
+  ARQUITECTO
+  CLIENTE
+
+  @@map("rol_usuario")
+}
+
+model Usuario {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String     @map("password_hash")
+  nombre       String
+  apellido     String
+  rol          RolUsuario @default(CLIENTE)
+  activo       Boolean    @default(true)
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt      @map("updated_at")
+
+  @@map("usuarios")
+}
+
 // ─────────────────────────────────────────────
 // ENUMS
 // ─────────────────────────────────────────────

@@ -63,3 +63,32 @@ Permite representar herencias, copropiedades y representaciones legales con el t
 | `HEREDERO` | Heredero en proceso sucesorio |
 | `REPRESENTANTE` | Actúa en representación del propietario |
 | `COPROPIETARIO` | Comparte la propiedad con otros clientes |
+
+---
+
+## Tabla: `usuarios`
+
+Registro de usuarios del sistema para control de acceso (RBAC).
+
+| Columna | Tipo | Nullable | Clave | Descripción |
+|---|---|---|---|---|
+| `id` | `uuid` | NO | PK | Identificador único (UUID v4) |
+| `email` | `text` | NO | UK | Correo electrónico para inicio de sesión |
+| `password_hash` | `text` | NO | — | Hash de la contraseña |
+| `nombre` | `text` | NO | — | Nombre del usuario |
+| `apellido` | `text` | NO | — | Apellido del usuario |
+| `rol` | `rol_usuario` | NO | — | Rol del usuario (`ADMIN`, `ABOGADO`, `ARQUITECTO`, `CLIENTE`) |
+| `activo` | `boolean` | NO | — | Si el usuario puede iniciar sesión |
+| `created_at` | `timestamptz` | NO | — | Fecha/hora de creación |
+| `updated_at` | `timestamptz` | NO | — | Fecha/hora de modificación |
+
+---
+
+## Enum: `rol_usuario`
+
+| Valor | Descripción |
+|---|---|
+| `ADMIN` | Administrador total del sistema |
+| `ABOGADO` | Encargado de trámites legales |
+| `ARQUITECTO` | Encargado de trámites técnicos |
+| `CLIENTE` | Portal del cliente (solo lectura) |

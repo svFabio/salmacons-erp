@@ -34,6 +34,18 @@ erDiagram
         timestamp created_at
     }
 
+    USUARIOS {
+        uuid id PK
+        string email UK
+        string password_hash
+        string nombre
+        string apellido
+        enum rol "ADMIN|ABOGADO|ARQUITECTO|CLIENTE"
+        boolean activo
+        timestamp created_at
+        timestamp updated_at
+    }
+
     CLIENTES ||--o{ CLIENTE_INMUEBLE : "tiene"
     INMUEBLES ||--o{ CLIENTE_INMUEBLE : "pertenece a"
 ```
