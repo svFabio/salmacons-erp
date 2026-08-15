@@ -14,12 +14,13 @@
 /* Brand Side */
 .login-brand {
   display: none;
-  background: linear-gradient(135deg, var(--c-primary), var(--c-primary-hover));
-  color: var(--c-text-inverse);
+  background-color: #F3F4F6;
+  color: var(--c-text-main);
   flex: 1;
   padding: var(--space-12);
   align-items: center;
   justify-content: center;
+  border-right: 1px solid var(--c-border);
   
   @media (min-width: 1024px) {
     display: flex;
@@ -29,25 +30,31 @@
 .brand-content {
   max-width: 480px;
   
-  .logo-icon-large {
-    height: 120px;
-    width: auto;
-    border-radius: var(--radius-lg);
-    margin-bottom: var(--space-8);
-    filter: drop-shadow(0 0 40px rgba(245, 200, 0, 0.4));
-  }
-  
-  h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    letter-spacing: -0.05em;
-    margin-bottom: var(--space-4);
+  .logo-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+
+    .logo-icon-large {
+      height: 90px;
+      width: auto;
+    }
+    
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin: 0;
+      color: var(--c-text-main);
+    }
   }
   
   p {
     font-size: 1.125rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--c-text-muted);
     line-height: 1.6;
+    margin-left: 10px;
   }
 }
 
@@ -58,12 +65,18 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-6);
-  background-color: var(--c-bg);
+  background-color: var(--c-surface);
+  position: relative;
+  z-index: 10;
+  box-shadow: -20px 0 40px rgba(0, 0, 0, 0.05); /* Soft shadow over the left side */
 }
 
 .login-card {
   width: 100%;
   max-width: 420px;
+  background-color: transparent;
+  padding: var(--space-8);
+  box-shadow: none;
   
   h2 {
     font-size: 1.875rem;
@@ -83,7 +96,18 @@
   width: 100%;
   padding: var(--space-3);
   font-size: 1rem;
+  font-weight: 600;
   margin-top: var(--space-4);
+  background-color: var(--c-dark, #000000);
+  color: #FFFFFF;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  
+  &:hover {
+    background-color: var(--c-primary); /* Yellow on hover */
+    color: #0D0D0D; /* Dark text on yellow */
+    box-shadow: 0 4px 15px rgba(245, 200, 0, 0.3);
+  }
   
   &:disabled {
     opacity: 0.7;

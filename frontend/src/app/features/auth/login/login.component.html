@@ -3,8 +3,10 @@
     <!-- Branding Side -->
     <div class="login-brand">
       <div class="brand-content">
-        <img src="/Estudio%20Jur%C3%ADdico%20y%20Arquitectura.pdf.png" alt="SALMACONS Logo" class="logo-icon-large">
-        <h1>SALMACONS</h1>
+        <div class="logo-header">
+          <img [src]="brand.logoPath" [alt]="brand.name + ' Logo'" class="logo-icon-large">
+          <h1>{{ brand.name }}</h1>
+        </div>
         <p>Sistema Integral de Gestión Legal y Técnica para el sector inmobiliario y de construcción.</p>
       </div>
     </div>

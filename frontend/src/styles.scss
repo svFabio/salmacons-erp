@@ -11,13 +11,13 @@
   --c-red: #D94F5C;
   --c-red-hover: #BF3F4B;
 
-  /* Colors - Surfaces (dark theme) */
-  --c-bg: #0D0D0D;
-  --c-surface: #161616;
-  --c-surface-2: #1F1F1F;
-  --c-surface-hover: #252525;
-  --c-border: rgba(255, 255, 255, 0.08);
-  --c-border-focus: rgba(245, 200, 0, 0.5);
+  /* Colors - Surfaces (light theme) */
+  --c-bg: #F8FAFC;
+  --c-surface: #FFFFFF;
+  --c-surface-2: #F1F5F9;
+  --c-surface-hover: #E2E8F0;
+  --c-border: #E2E8F0;
+  --c-border-focus: #F5C800;
 
   /* Colors - Primary action */
   --c-primary: var(--c-yellow);
@@ -34,9 +34,9 @@
   --c-info: #60A5FA;
 
   /* Colors - Text */
-  --c-text-main: #F0F0F0;
-  --c-text-muted: #9A9A9A;
-  --c-text-inverse: #0D0D0D;
+  --c-text-main: #0D0D0D;
+  --c-text-muted: #64748B;
+  --c-text-inverse: #FFFFFF;
   --c-text-on-yellow: #0D0D0D;
 
   /* Typography */

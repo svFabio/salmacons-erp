@@ -2,8 +2,8 @@
   <aside class="salma-sidebar">
     <div class="sidebar-header">
       <div class="logo">
-        <img src="/Estudio%20Jur%C3%ADdico%20y%20Arquitectura.pdf.png" alt="SALMACONS Logo" class="logo-icon">
-        <span class="logo-text">SALMACONS</span>
+        <img [src]="brand.logoPath" [alt]="brand.name + ' Logo'" class="logo-icon">
+        <span class="logo-text">{{ brand.name }}</span>
       </div>
       <div class="user-role-badge">{{ role }}</div>
     </div>
