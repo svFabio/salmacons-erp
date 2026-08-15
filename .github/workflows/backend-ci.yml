@@ -12,6 +12,7 @@ jobs:
 
     env:
       DATABASE_URL: postgresql://salma:salma_dev@localhost:5432/salma?schema=public
+      JWT_SECRET: ci-test-secret-not-used-in-production
 
     defaults:
       run:
