@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ShellComponent } from './shell.component';
-import { Router } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { vi, Mocked } from 'vitest';
 
@@ -8,7 +8,7 @@ describe('ShellComponent', () => {
   let component: ShellComponent;
   let fixture: ComponentFixture<ShellComponent>;
   let authServiceMock: Mocked<Partial<AuthService>>;
-  let routerMock: Mocked<Partial<Router>>;
+  let router: Router;
 
   beforeEach(async () => {
     authServiceMock = {
@@ -16,19 +16,16 @@ describe('ShellComponent', () => {
       getCurrentRole: vi.fn().mockReturnValue('ADMIN')
     } as unknown as Mocked<Partial<AuthService>>;
 
-    routerMock = {
-      navigate: vi.fn(),
-    } as unknown as Mocked<Partial<Router>>;
-
     await TestBed.configureTestingModule({
-      imports: [
-        ShellComponent
-      ],
+      imports: [ShellComponent],
       providers: [
+        provideRouter([]),
         { provide: AuthService, useValue: authServiceMock },
-        { provide: Router, useValue: routerMock }
       ]
     }).compileComponents();
+
+    router = TestBed.inject(Router);
+    vi.spyOn(router, 'navigate').mockResolvedValue(true);
 
     fixture = TestBed.createComponent(ShellComponent);
     component = fixture.componentInstance;
@@ -37,8 +34,8 @@ describe('ShellComponent', () => {
 
   it('should call authService.logout and navigate on logout', () => {
     component.logout();
-    
+
     expect(authServiceMock.logout).toHaveBeenCalled();
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/login']);
+    expect(router.navigate).toHaveBeenCalledWith(['/login']);
   });
 });

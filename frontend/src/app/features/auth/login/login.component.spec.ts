@@ -9,18 +9,18 @@ import { vi, Mocked } from 'vitest';
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let authServiceMock: Mocked<Partial<AuthService>>;
-  let routerMock: Mocked<Partial<Router>>;
+  let authServiceMock: Mocked<AuthService>;
+  let routerMock: Mocked<Router>;
 
   beforeEach(async () => {
     authServiceMock = {
       login: vi.fn(),
       me: vi.fn(),
-    } as unknown as Mocked<Partial<AuthService>>;
+    } as unknown as Mocked<AuthService>;
 
     routerMock = {
       navigate: vi.fn(),
-    } as unknown as Mocked<Partial<Router>>;
+    } as unknown as Mocked<Router>;
 
     await TestBed.configureTestingModule({
       imports: [
