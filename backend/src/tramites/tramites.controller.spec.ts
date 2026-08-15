@@ -8,6 +8,7 @@ import { CrearTramiteDto } from './dto/crear-tramite.dto';
 
 import { RolUsuario, Tramite } from '@prisma/client';
 import { AuthUser } from '../auth/auth.types';
+import { TipoTramiteNoConfiguradoError } from '../common/errors/app.error';
 
 describe('TramitesController', () => {
   let controller: TramitesController;
@@ -49,6 +50,11 @@ describe('TramitesController', () => {
         id: 'usr-1',
         email: 'test@test.com',
         rol: RolUsuario.ADMIN,
+        nombre: 'Test',
+        apellido: 'User',
+        activo: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
       const mockResult: Tramite = {
         id: '1',
@@ -66,6 +72,28 @@ describe('TramitesController', () => {
 
       expect(service.createTramite).toHaveBeenCalledWith(dto, 'usr-1');
       expect(result).toEqual(mockResult);
+    });
+
+    it('should propagate a domain error when the service rejects', async () => {
+      const dto: CrearTramiteDto = {
+        inmuebleId: 'inm-1',
+        tipoTramiteId: 'tipo-1',
+      };
+      const mockUser: AuthUser = {
+        id: 'usr-1',
+        email: 'test@test.com',
+        rol: RolUsuario.ADMIN,
+        nombre: 'Test',
+        apellido: 'User',
+        activo: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      const error = new TipoTramiteNoConfiguradoError('tipo-1');
+
+      jest.spyOn(service, 'createTramite').mockRejectedValue(error);
+
+      await expect(controller.create(dto, mockUser)).rejects.toBe(error);
     });
   });
 });
