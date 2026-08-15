@@ -2,14 +2,26 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsuariosService } from './usuarios.service';
 import { UsuariosRepository } from './usuarios.repository';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { RolUsuario } from '@prisma/client';
-import * as bcrypt from 'bcryptjs';
+import { RolUsuario, Usuario } from '@prisma/client';
 
 describe('UsuariosService', () => {
   let service: UsuariosService;
-  let repository: jest.Mocked<UsuariosRepository>;
 
-  const mockUsuario = {
+  const findByEmailMock = jest.fn();
+  const createMock = jest.fn();
+  const findAllMock = jest.fn();
+  const findByIdMock = jest.fn();
+  const updateMock = jest.fn();
+
+  const mockRepository = {
+    findByEmail: findByEmailMock,
+    create: createMock,
+    findAll: findAllMock,
+    findById: findByIdMock,
+    update: updateMock,
+  };
+
+  const mockUsuario: Usuario = {
     id: '1',
     email: 'test@test.com',
     passwordHash: 'hash',
@@ -22,14 +34,7 @@ describe('UsuariosService', () => {
   };
 
   beforeEach(async () => {
-    const mockRepository = {
-      findByEmail: jest.fn(),
-      create: jest.fn(),
-      findAll: jest.fn(),
-      findById: jest.fn(),
-      update: jest.fn(),
-    };
-
+    jest.clearAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsuariosService,
@@ -41,7 +46,6 @@ describe('UsuariosService', () => {
     }).compile();
 
     service = module.get<UsuariosService>(UsuariosService);
-    repository = module.get(UsuariosRepository);
   });
 
   it('should be defined', () => {
@@ -50,38 +54,71 @@ describe('UsuariosService', () => {
 
   describe('create', () => {
     it('should throw ConflictException if email exists', async () => {
-      repository.findByEmail.mockResolvedValue(mockUsuario as any);
-      await expect(service.create({ email: 'test@test.com', password: 'password', nombre: 'Test', apellido: 'User' })).rejects.toThrow(ConflictException);
+      findByEmailMock.mockResolvedValue(mockUsuario);
+
+      await expect(
+        service.create({
+          email: 'test@test.com',
+          password: 'password',
+          nombre: 'Test',
+          apellido: 'User',
+        }),
+      ).rejects.toThrow(ConflictException);
     });
 
-    it('should create a user', async () => {
-      repository.findByEmail.mockResolvedValue(null);
-      repository.create.mockResolvedValue(mockUsuario as any);
-      const result = await service.create({ email: 'new@test.com', password: 'password', nombre: 'Test', apellido: 'User' });
+    it('should create a user without exposing the password hash', async () => {
+      findByEmailMock.mockResolvedValue(null);
+      createMock.mockResolvedValue(mockUsuario);
+
+      const result = await service.create({
+        email: 'new@test.com',
+        password: 'password',
+        nombre: 'Test',
+        apellido: 'User',
+      });
+
       expect(result).not.toHaveProperty('passwordHash');
-      expect(repository.create).toHaveBeenCalled();
+      expect(createMock).toHaveBeenCalled();
     });
   });
 
   describe('findAll', () => {
-    it('should return all users', async () => {
-      repository.findAll.mockResolvedValue([mockUsuario] as any);
+    it('should return all users without exposing password hashes', async () => {
+      findAllMock.mockResolvedValue([mockUsuario]);
+
       const result = await service.findAll();
+
       expect(result).toHaveLength(1);
       expect(result[0]).not.toHaveProperty('passwordHash');
     });
   });
 
   describe('findById', () => {
-    it('should return a user', async () => {
-      repository.findById.mockResolvedValue(mockUsuario as any);
+    it('should return a user without exposing the password hash', async () => {
+      findByIdMock.mockResolvedValue(mockUsuario);
+
       const result = await service.findById('1');
+
       expect(result).toBeDefined();
+      expect(result).not.toHaveProperty('passwordHash');
     });
 
     it('should throw NotFoundException if user not found', async () => {
-      repository.findById.mockResolvedValue(null);
+      findByIdMock.mockResolvedValue(null);
+
       await expect(service.findById('2')).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('update', () => {
+    it('should update the user and return it without the password hash', async () => {
+      findByIdMock.mockResolvedValue(mockUsuario);
+      updateMock.mockResolvedValue({ ...mockUsuario, nombre: 'Updated' });
+
+      const result = await service.update('1', { nombre: 'Updated' });
+
+      expect(result).not.toHaveProperty('passwordHash');
+      expect(result.nombre).toBe('Updated');
     });
   });
 });

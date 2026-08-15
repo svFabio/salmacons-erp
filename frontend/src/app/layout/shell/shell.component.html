@@ -1,0 +1,28 @@
+<div class="shell-container">
+  <aside class="sidebar">
+    <div class="logo">SALMA</div>
+    <nav>
+      <ul *ngIf="role === 'ADMIN'">
+        <li><a routerLink="/app/clientes" routerLinkActive="active">Clientes</a></li>
+        <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles</a></li>
+        <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites</a></li>
+        <li><a routerLink="/app/usuarios" routerLinkActive="active">Usuarios</a></li>
+      </ul>
+      <ul *ngIf="role === 'ABOGADO'">
+        <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles</a></li>
+        <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites Legales</a></li>
+      </ul>
+      <ul *ngIf="role === 'ARQUITECTO'">
+        <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles</a></li>
+        <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites Técnicos</a></li>
+      </ul>
+      <ul *ngIf="role === 'CLIENTE'">
+        <li><a routerLink="/app/inmuebles" routerLinkActive="active">Mis Inmuebles</a></li>
+      </ul>
+    </nav>
+    <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+  </aside>
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -2,34 +2,37 @@ import { Injectable } from '@nestjs/common';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
+import { sinPassword } from '../usuarios/usuarios.types';
+import { AuthUser, JwtPayload } from './auth.types';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usuariosService: UsuariosService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
+  async validateUser(email: string, pass: string): Promise<AuthUser | null> {
     const user = await this.usuariosService.findByEmailForAuth(email);
-    if (user && user.activo && await bcrypt.compare(pass, user.passwordHash)) {
-      const { passwordHash, ...result } = user;
-      return result;
+    if (
+      user &&
+      user.activo &&
+      (await bcrypt.compare(pass, user.passwordHash))
+    ) {
+      return sinPassword(user);
     }
     return null;
   }
 
-  async login(user: any) {
-    const payload = { sub: user.id, email: user.email, rol: user.rol };
+  login(user: AuthUser): { access_token: string; user: AuthUser } {
+    const payload: JwtPayload = {
+      sub: user.id,
+      email: user.email,
+      rol: user.rol,
+    };
     return {
       access_token: this.jwtService.sign(payload),
-      user: {
-        id: user.id,
-        email: user.email,
-        nombre: user.nombre,
-        apellido: user.apellido,
-        rol: user.rol,
-      }
+      user,
     };
   }
 }

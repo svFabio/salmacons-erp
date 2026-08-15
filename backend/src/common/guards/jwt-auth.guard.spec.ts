@@ -13,11 +13,13 @@ describe('JwtAuthGuard', () => {
   });
 
   it('should throw UnauthorizedException if no user', () => {
-    expect(() => guard.handleRequest(null, null, null)).toThrow(UnauthorizedException);
+    expect(() => guard.handleRequest(null, null)).toThrow(
+      UnauthorizedException,
+    );
   });
 
   it('should return user if exists', () => {
     const user = { id: 1 };
-    expect(guard.handleRequest(null, user, null)).toBe(user);
+    expect(guard.handleRequest(null, user)).toBe(user);
   });
 });
