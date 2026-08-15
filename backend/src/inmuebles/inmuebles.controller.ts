@@ -1,3 +1,8 @@
+import { JwtAuthGuard } from "../common/guards/jwt-auth.guard";
+import { RolesGuard } from "../common/guards/roles.guard";
+import { Roles } from "../common/decorators/roles.decorator";
+import { RolUsuario } from "@prisma/client";
+import { UseGuards } from "@nestjs/common";
 import {
   Controller,
   Get,
@@ -12,6 +17,8 @@ import { CrearInmuebleDto } from './dto/crear-inmueble.dto';
 import { ActualizarInmuebleDto } from './dto/actualizar-inmueble.dto';
 import { Inmueble, ClienteInmueble, RolClienteInmueble } from '@prisma/client';
 
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(RolUsuario.ADMIN, RolUsuario.ABOGADO)
 @Controller('inmuebles')
 export class InmueblesController {
   constructor(private readonly inmueblesService: InmueblesService) {}
