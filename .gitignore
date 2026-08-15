@@ -34,3 +34,7 @@ Thumbs.db
 
 # Tooling metadata
 .atl/
+
+# Agent codegen scripts (not runtime code)
+backend/generate_*.py
+backend/update_*.py
