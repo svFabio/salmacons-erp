@@ -24,7 +24,10 @@ export class UsuariosController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() actualizarUsuarioDto: ActualizarUsuarioDto) {
+  update(
+    @Param('id') id: string,
+    @Body() actualizarUsuarioDto: ActualizarUsuarioDto,
+  ) {
     return this.usuariosService.update(id, actualizarUsuarioDto);
   }
 }

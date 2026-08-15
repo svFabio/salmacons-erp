@@ -10,7 +10,11 @@ import { InmueblesModule } from './inmuebles/inmuebles.module';
 @Module({
   imports: [
     UsuariosModule,
-    AuthModule,PrismaModule, ClientesModule, InmueblesModule],
+    AuthModule,
+    PrismaModule,
+    ClientesModule,
+    InmueblesModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
