@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "echo 'No eslint configured for frontend yet. Add @angular-eslint later.' && exit 0"
   },
   "private": true,
   "packageManager": "pnpm@11.10.0",
