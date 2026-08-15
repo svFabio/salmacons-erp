@@ -123,6 +123,22 @@ Regla de capas: Controller → Service → Repository → Prisma. Cada capa habl
 - Errores de dominio: clases tipadas que extienden `AppError` (con `statusCode` y `code`), nunca errores crudos al cliente.
 - Sin archivos muertos en la raíz; scripts en `scripts/`.
 
+### TDD estricto (obligatorio)
+
+Toda la lógica de dominio (services, repositories, controllers y, en general, cualquier módulo con comportamiento) se desarrolla con TDD estricto en tres fases:
+
+1. **RED**: se escribe PRIMERO el test que falla, antes que el código de producción. El test debe fallar por la razón correcta: la funcionalidad aún no existe.
+2. **GREEN**: se implementa el código mínimo necesario para que el test pase.
+3. **REFACTOR**: se limpia y mejora la implementación manteniendo todos los tests en verde.
+
+Reglas obligatorias:
+
+- Ningún service, repository o controller se considera completo sin su test unitario (`*.spec.ts`) que cubra el comportamiento y los casos de error. Los tests viajan en el MISMO commit que el código que verifican.
+- Tests unitarios: `pnpm run test` (jest, SIN base de datos viva — los servicios de acceso a datos se prueban con mocks para que la suite sea rápida y determinista).
+- Tests de integración: `pnpm run test:e2e`.
+- Cobertura: `pnpm run test:cov`. La nueva lógica de dominio no debe reducir la cobertura global del módulo que toca.
+- **CI**: la suite completa (`pnpm run lint`, `pnpm run test`, `pnpm run build`, `pnpm run test:e2e`) corre en GitHub Actions en cada push a `main` y en cada PR. Un PR con tests en rojo no se fusiona.
+
 ### Commits
 
 - Conventional Commits: `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`, `test:`
@@ -171,6 +187,7 @@ Cada vez que un cambio de código modifique el esquema (nueva tabla, columna, re
 - ❌ Crear carpetas en Cloudinary manualmente o dejar que el usuario elija la ruta.
 - ❌ Romper la relación muchos-a-muchos Cliente–Inmueble (simplificar a 1:1 o 1:N).
 - ❌ Usar `any` en TypeScript.
+- ❌ Escribir lógica de dominio (services, repositories, controllers) sin escribir primero el test que falla (TDD estricto, ver §5).
 - ❌ Modificar el esquema de BD sin actualizar `/docs/bd/erd.md` y `/docs/bd/diccionario-datos.md`.
 - ❌ Hardcodear credenciales, tokens o cadenas de conexión en el código (siempre `.env`, nunca committear `.env` real).
 - ❌ Crear una tabla por tipo de trámite — el motor de estados es genérico y configurable.
