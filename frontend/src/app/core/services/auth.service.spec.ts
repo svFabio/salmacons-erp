@@ -75,6 +75,6 @@ describe('AuthService', () => {
     
     expect(localStorage.getItem('salma_token')).toBeNull();
     expect(service.currentUser$.value).toBeNull();
-    expect(service.isLoggedIn()).toBeFalse();
+    expect(service.isLoggedIn()).toBeFalsy();
   });
 });
