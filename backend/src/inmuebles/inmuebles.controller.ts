@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { InmueblesService } from './inmuebles.service';
 import { CrearInmuebleDto } from './dto/crear-inmueble.dto';
 import { ActualizarInmuebleDto } from './dto/actualizar-inmueble.dto';
@@ -24,7 +32,10 @@ export class InmueblesController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateInmuebleDto: ActualizarInmuebleDto): Promise<Inmueble> {
+  async update(
+    @Param('id') id: string,
+    @Body() updateInmuebleDto: ActualizarInmuebleDto,
+  ): Promise<Inmueble> {
     return this.inmueblesService.update(id, updateInmuebleDto);
   }
 

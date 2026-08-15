@@ -24,7 +24,10 @@ export class InmueblesService {
     return this.inmueblesRepository.create(createInmuebleDto);
   }
 
-  async update(id: string, updateInmuebleDto: ActualizarInmuebleDto): Promise<Inmueble> {
+  async update(
+    id: string,
+    updateInmuebleDto: ActualizarInmuebleDto,
+  ): Promise<Inmueble> {
     await this.findById(id);
     return this.inmueblesRepository.update(id, updateInmuebleDto);
   }
@@ -34,7 +37,11 @@ export class InmueblesService {
     await this.inmueblesRepository.delete(id);
   }
 
-  async asociarCliente(inmuebleId: string, clienteId: string, rol: RolClienteInmueble): Promise<ClienteInmueble> {
+  async asociarCliente(
+    inmuebleId: string,
+    clienteId: string,
+    rol: RolClienteInmueble,
+  ): Promise<ClienteInmueble> {
     await this.findById(inmuebleId);
     return this.inmueblesRepository.asociarCliente(inmuebleId, clienteId, rol);
   }

@@ -12,7 +12,7 @@ const mockPrismaService = {
   },
   clienteInmueble: {
     create: jest.fn(),
-  }
+  },
 };
 
 describe('InmueblesRepository', () => {

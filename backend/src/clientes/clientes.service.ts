@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { ClientesRepository } from '../repositories/clientes.repository';
 import { CrearClienteDto } from './dto/crear-cliente.dto';
 import { ActualizarClienteDto } from './dto/actualizar-cliente.dto';
@@ -21,19 +25,30 @@ export class ClientesService {
   }
 
   async create(createClienteDto: CrearClienteDto): Promise<Cliente> {
-    const existente = await this.clientesRepository.findByCi(createClienteDto.ci);
+    const existente = await this.clientesRepository.findByCi(
+      createClienteDto.ci,
+    );
     if (existente) {
-      throw new ConflictException(`Cliente con CI ${createClienteDto.ci} ya existe`);
+      throw new ConflictException(
+        `Cliente con CI ${createClienteDto.ci} ya existe`,
+      );
     }
     return this.clientesRepository.create(createClienteDto);
   }
 
-  async update(id: string, updateClienteDto: ActualizarClienteDto): Promise<Cliente> {
+  async update(
+    id: string,
+    updateClienteDto: ActualizarClienteDto,
+  ): Promise<Cliente> {
     await this.findById(id); // verifica si existe
     if (updateClienteDto.ci) {
-      const existente = await this.clientesRepository.findByCi(updateClienteDto.ci);
+      const existente = await this.clientesRepository.findByCi(
+        updateClienteDto.ci,
+      );
       if (existente && existente.id !== id) {
-        throw new ConflictException(`Cliente con CI ${updateClienteDto.ci} ya existe`);
+        throw new ConflictException(
+          `Cliente con CI ${updateClienteDto.ci} ya existe`,
+        );
       }
     }
     return this.clientesRepository.update(id, updateClienteDto);

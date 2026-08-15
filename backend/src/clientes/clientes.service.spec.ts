@@ -42,12 +42,16 @@ describe('ClientesService', () => {
 
   it('create should throw ConflictException if ci exists', async () => {
     mockClientesRepository.findByCi.mockResolvedValue({ id: '2', ci: '123' });
-    await expect(service.create({ nombres: 'a', apellidos: 'b', ci: '123' })).rejects.toThrow(ConflictException);
+    await expect(
+      service.create({ nombres: 'a', apellidos: 'b', ci: '123' }),
+    ).rejects.toThrow(ConflictException);
   });
-  
+
   it('update should throw ConflictException if new ci belongs to another cliente', async () => {
     mockClientesRepository.findById.mockResolvedValue({ id: '1', ci: '111' });
     mockClientesRepository.findByCi.mockResolvedValue({ id: '2', ci: '222' });
-    await expect(service.update('1', { ci: '222' })).rejects.toThrow(ConflictException);
+    await expect(service.update('1', { ci: '222' })).rejects.toThrow(
+      ConflictException,
+    );
   });
 });

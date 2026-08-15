@@ -33,7 +33,11 @@ export class InmueblesRepository {
     await this.prisma.inmueble.delete({ where: { id } });
   }
 
-  async asociarCliente(inmuebleId: string, clienteId: string, rol: RolClienteInmueble): Promise<ClienteInmueble> {
+  async asociarCliente(
+    inmuebleId: string,
+    clienteId: string,
+    rol: RolClienteInmueble,
+  ): Promise<ClienteInmueble> {
     return this.prisma.clienteInmueble.create({
       data: {
         inmuebleId,
