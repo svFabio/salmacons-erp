@@ -1,36 +1,47 @@
 /* ==========================================================================
-   SALMA Design System
+   SALMA Design System — Brand Palette
+   Base: Negro #0D0D0D | Primary: Amarillo #F5C800 | Accent: Rojo #D94F5C
    ========================================================================== */
 
 :root {
-  /* Colors - Core */
-  --c-primary: #0f172a;
-  --c-primary-hover: #1e293b;
-  --c-accent: #2563eb;
-  --c-accent-hover: #1d4ed8;
-  
-  /* Colors - Semantic */
-  --c-success: #10b981;
-  --c-warning: #f59e0b;
-  --c-error: #ef4444;
-  --c-info: #3b82f6;
+  /* Colors - Brand */
+  --c-yellow: #F5C800;
+  --c-yellow-hover: #D4AC00;
+  --c-yellow-muted: rgba(245, 200, 0, 0.12);
+  --c-red: #D94F5C;
+  --c-red-hover: #BF3F4B;
 
-  /* Colors - Surface & Background */
-  --c-bg: #f8fafc;
-  --c-surface: #ffffff;
-  --c-surface-hover: #f1f5f9;
-  
+  /* Colors - Surfaces (dark theme) */
+  --c-bg: #0D0D0D;
+  --c-surface: #161616;
+  --c-surface-2: #1F1F1F;
+  --c-surface-hover: #252525;
+  --c-border: rgba(255, 255, 255, 0.08);
+  --c-border-focus: rgba(245, 200, 0, 0.5);
+
+  /* Colors - Primary action */
+  --c-primary: var(--c-yellow);
+  --c-primary-hover: var(--c-yellow-hover);
+
+  /* Colors - Accent */
+  --c-accent: var(--c-red);
+  --c-accent-hover: var(--c-red-hover);
+
+  /* Colors - Semantic */
+  --c-success: #4ADE80;
+  --c-warning: #FBBF24;
+  --c-error: #D94F5C;
+  --c-info: #60A5FA;
+
   /* Colors - Text */
-  --c-text-main: #0f172a;
-  --c-text-muted: #64748b;
-  --c-text-inverse: #ffffff;
-  
-  /* Colors - Borders */
-  --c-border: #e2e8f0;
-  --c-border-focus: #94a3b8;
+  --c-text-main: #F0F0F0;
+  --c-text-muted: #9A9A9A;
+  --c-text-inverse: #0D0D0D;
+  --c-text-on-yellow: #0D0D0D;
 
   /* Typography */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
   
   /* Spacing */
   --space-1: 0.25rem;
@@ -41,15 +52,17 @@
   --space-8: 2rem;
   --space-12: 3rem;
   
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  /* Shadows (dark-adapted) */
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 16px 32px -4px rgb(0 0 0 / 0.6);
+  --shadow-yellow: 0 0 20px rgba(245, 200, 0, 0.15);
   
   /* Radius */
   --radius-sm: 0.25rem;
   --radius-md: 0.375rem;
   --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
   --radius-full: 9999px;
   
   /* Transitions */

@@ -30,12 +30,11 @@
   max-width: 480px;
   
   .logo-icon-large {
-    width: 64px;
-    height: 64px;
-    background-color: var(--c-accent);
+    height: 120px;
+    width: auto;
     border-radius: var(--radius-lg);
     margin-bottom: var(--space-8);
-    box-shadow: 0 0 40px rgba(37, 99, 235, 0.4);
+    filter: drop-shadow(0 0 40px rgba(245, 200, 0, 0.4));
   }
   
   h1 {
