@@ -1,0 +1,47 @@
+
+.salma-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.page-header {
+  .page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--c-text-main);
+  }
+  .page-description {
+    color: var(--c-text-muted);
+    font-size: 0.9rem;
+    margin-top: var(--space-1);
+  }
+}
+.salma-tabs {
+  display: flex;
+  gap: var(--space-6);
+  border-bottom: 1px solid var(--c-border);
+  
+  .tab-item {
+    padding: var(--space-2) 0;
+    color: var(--c-text-muted);
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: -1px;
+
+    &:hover {
+      color: var(--c-text-main);
+    }
+    &.active {
+      color: var(--c-primary);
+      border-bottom-color: var(--c-primary);
+    }
+  }
+}
+.tab-content-area {
+  padding-top: var(--space-4);
+}
+

@@ -12,10 +12,9 @@
       <!-- ADMIN: todas las épicas -->
       <ng-container *ngIf="role === 'ADMIN'">
         <div class="nav-section">
-          <p class="nav-section-label">Directorio</p>
           <ul>
-            <li><a routerLink="/app/clientes" routerLinkActive="active">Clientes</a></li>
-            <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles</a></li>
+            <li><a routerLink="/app/inicio" routerLinkActive="active">Inicio</a></li>
+            <li><a routerLink="/app/directorio" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">Cartera</a></li>
           </ul>
         </div>
         <div class="nav-section">
@@ -38,7 +37,8 @@
       <ng-container *ngIf="role === 'ABOGADO'">
         <div class="nav-section">
           <ul>
-            <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles Asignados</a></li>
+            <li><a routerLink="/app/inicio" routerLinkActive="active">Inicio</a></li>
+            <li><a routerLink="/app/directorio" routerLinkActive="active">Cartera Asignada</a></li>
             <li><a routerLink="/app/legal" routerLinkActive="active">Gestión Legal</a></li>
             <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites Legales</a></li>
           </ul>
@@ -49,7 +49,8 @@
       <ng-container *ngIf="role === 'ARQUITECTO'">
         <div class="nav-section">
           <ul>
-            <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles Asignados</a></li>
+            <li><a routerLink="/app/inicio" routerLinkActive="active">Inicio</a></li>
+            <li><a routerLink="/app/directorio" routerLinkActive="active">Cartera Asignada</a></li>
             <li><a routerLink="/app/tecnica" routerLinkActive="active">Gestión Técnica</a></li>
             <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites Técnicos</a></li>
           </ul>
@@ -60,6 +61,7 @@
       <ng-container *ngIf="role === 'CLIENTE'">
         <div class="nav-section">
           <ul>
+            <li><a routerLink="/app/inicio" routerLinkActive="active">Inicio</a></li>
             <li><a routerLink="/app/inmuebles" routerLinkActive="active">Mis Inmuebles</a></li>
           </ul>
         </div>

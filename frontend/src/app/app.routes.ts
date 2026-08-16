@@ -8,6 +8,8 @@ import { ClientesComponent } from './features/clientes/clientes.component';
 import { InmueblesComponent } from './features/inmuebles/inmuebles.component';
 import { TramitesComponent } from './features/tramites/tramites.component';
 import { UsuariosComponent } from './features/usuarios/usuarios.component';
+import { InicioComponent } from './features/dashboard/inicio/inicio.component';
+import { DirectorioComponent } from './features/directorio/directorio.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -18,11 +20,21 @@ export const routes: Routes = [
     component: ShellComponent,
     canActivate: [authGuard],
     children: [
-      { path: 'clientes', component: ClientesComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'ABOGADO', 'ARQUITECTO'] } },
-      { path: 'inmuebles', component: InmueblesComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'ABOGADO', 'ARQUITECTO', 'CLIENTE'] } },
+      { path: 'inicio', component: InicioComponent },
+      { 
+        path: 'directorio', 
+        component: DirectorioComponent, 
+        canActivate: [roleGuard], 
+        data: { roles: ['ADMIN', 'ABOGADO', 'ARQUITECTO'] },
+        children: [
+          { path: 'clientes', component: ClientesComponent },
+          { path: 'inmuebles', component: InmueblesComponent },
+          { path: '', redirectTo: 'clientes', pathMatch: 'full' }
+        ]
+      },
       { path: 'tramites', component: TramitesComponent, canActivate: [roleGuard], data: { roles: ['ADMIN', 'ABOGADO', 'ARQUITECTO'] } },
       { path: 'usuarios', component: UsuariosComponent, canActivate: [roleGuard], data: { roles: ['ADMIN'] } },
-      { path: '', redirectTo: 'inmuebles', pathMatch: 'full' },
+      { path: '', redirectTo: 'inicio', pathMatch: 'full' },
     ],
   },
   { path: '**', redirectTo: '/login' },
