@@ -9,7 +9,7 @@
 /* Sidebar */
 .salma-sidebar {
   width: 260px;
-  background-color: var(--c-dark, #0D0D0D);
+  background-color: #1A1D23;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -18,7 +18,7 @@
 
 .sidebar-header {
   padding: var(--space-6);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -29,41 +29,49 @@
     gap: var(--space-3);
 
     .logo-icon {
-      width: 40px;
+      width: 36px;
       height: auto;
     }
 
     .logo-text {
-      font-size: 1.125rem;
+      font-size: 1rem;
       font-weight: 700;
-      letter-spacing: -0.02em;
+      letter-spacing: 0.02em;
       color: var(--c-primary);
     }
   }
 
   .user-role-badge {
     align-self: flex-start;
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 2px 10px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    padding: 2px 8px;
     border-radius: var(--radius-full);
-    background-color: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.5);
-    letter-spacing: 0.1em;
+    background-color: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 0.12em;
     text-transform: uppercase;
   }
 }
 
-.sidebar-nav {
-  flex: 1;
-  padding: var(--space-4) var(--space-3);
-  overflow-y: auto;
+.nav-section {
+  padding: var(--space-4) var(--space-3) var(--space-2);
+
+  .nav-section-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.22);
+    padding: 0 var(--space-4);
+    margin-bottom: var(--space-2);
+  }
 
   ul {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
+    gap: 2px;
   }
 
   a {
@@ -71,44 +79,51 @@
     align-items: center;
     padding: var(--space-3) var(--space-4);
     border-radius: var(--radius-md);
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.9rem;
+    border-left: 2px solid transparent;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.875rem;
     font-weight: 500;
     transition: all var(--transition-fast);
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.07);
-      color: rgba(255, 255, 255, 0.85);
+      background-color: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.75);
     }
 
     &.active {
-      background-color: var(--c-primary);
-      color: var(--c-dark, #0D0D0D);
+      background-color: rgba(245, 200, 0, 0.1);
+      border-left-color: var(--c-primary);
+      color: #FFFFFF;
       font-weight: 600;
     }
   }
 }
 
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
 .sidebar-footer {
-  padding: var(--space-4) var(--space-3);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: var(--space-3);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 
   .logout-btn {
     width: 100%;
     padding: var(--space-3) var(--space-4);
     border-radius: var(--radius-md);
     background-color: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 0.875rem;
+    border: none;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.8rem;
     font-weight: 500;
     text-align: left;
     cursor: pointer;
     transition: all var(--transition-fast);
 
     &:hover {
-      background-color: rgba(217, 79, 92, 0.15);
-      border-color: var(--c-error);
+      background-color: rgba(217, 79, 92, 0.12);
       color: var(--c-error);
     }
   }
@@ -120,11 +135,10 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  background-color: var(--c-bg);
 }
 
 .salma-topbar {
-  height: 64px;
+  height: 60px;
   background-color: var(--c-surface);
   border-bottom: 1px solid var(--c-border);
   display: flex;
@@ -134,24 +148,20 @@
   flex-shrink: 0;
 
   .page-title {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 500;
     color: var(--c-text-muted);
-    letter-spacing: 0.01em;
   }
 
   .user-profile {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-
     .avatar {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: var(--radius-full);
-      background-color: var(--c-primary);
-      border: 2px solid var(--c-dark, #0D0D0D);
-      box-shadow: 0 0 0 3px rgba(245, 200, 0, 0.2);
+      background-color: #1A1D23;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }
@@ -160,6 +170,7 @@
   flex: 1;
   overflow-y: auto;
   padding: var(--space-8);
+  background-color: var(--c-bg);
 
   .content-container {
     max-width: 1200px;

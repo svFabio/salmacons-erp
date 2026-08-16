@@ -7,41 +7,77 @@
       </div>
       <div class="user-role-badge">{{ role }}</div>
     </div>
-    
+
     <nav class="sidebar-nav">
-      <ul *ngIf="role === 'ADMIN'">
-        <li><a routerLink="/app/clientes" routerLinkActive="active">Clientes</a></li>
-        <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles</a></li>
-        <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites</a></li>
-        <li><a routerLink="/app/usuarios" routerLinkActive="active">Usuarios</a></li>
-      </ul>
-      <ul *ngIf="role === 'ABOGADO'">
-        <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles Asignados</a></li>
-        <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites Legales</a></li>
-      </ul>
-      <ul *ngIf="role === 'ARQUITECTO'">
-        <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles Asignados</a></li>
-        <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites Técnicos</a></li>
-      </ul>
-      <ul *ngIf="role === 'CLIENTE'">
-        <li><a routerLink="/app/inmuebles" routerLinkActive="active">Mis Inmuebles</a></li>
-      </ul>
+      <!-- ADMIN: todas las épicas -->
+      <ng-container *ngIf="role === 'ADMIN'">
+        <div class="nav-section">
+          <p class="nav-section-label">Directorio</p>
+          <ul>
+            <li><a routerLink="/app/clientes" routerLinkActive="active">Clientes</a></li>
+            <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles</a></li>
+          </ul>
+        </div>
+        <div class="nav-section">
+          <p class="nav-section-label">Trámites</p>
+          <ul>
+            <li><a routerLink="/app/tramites" routerLinkActive="active">Seguimiento</a></li>
+            <li><a routerLink="/app/legal" routerLinkActive="active">Gestión Legal</a></li>
+            <li><a routerLink="/app/tecnica" routerLinkActive="active">Gestión Técnica</a></li>
+          </ul>
+        </div>
+        <div class="nav-section">
+          <p class="nav-section-label">Sistema</p>
+          <ul>
+            <li><a routerLink="/app/usuarios" routerLinkActive="active">Usuarios</a></li>
+          </ul>
+        </div>
+      </ng-container>
+
+      <!-- ABOGADO: épica 2 -->
+      <ng-container *ngIf="role === 'ABOGADO'">
+        <div class="nav-section">
+          <ul>
+            <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles Asignados</a></li>
+            <li><a routerLink="/app/legal" routerLinkActive="active">Gestión Legal</a></li>
+            <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites Legales</a></li>
+          </ul>
+        </div>
+      </ng-container>
+
+      <!-- ARQUITECTO: épica 3 -->
+      <ng-container *ngIf="role === 'ARQUITECTO'">
+        <div class="nav-section">
+          <ul>
+            <li><a routerLink="/app/inmuebles" routerLinkActive="active">Inmuebles Asignados</a></li>
+            <li><a routerLink="/app/tecnica" routerLinkActive="active">Gestión Técnica</a></li>
+            <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites Técnicos</a></li>
+          </ul>
+        </div>
+      </ng-container>
+
+      <!-- CLIENTE: épica 5 — solo lectura -->
+      <ng-container *ngIf="role === 'CLIENTE'">
+        <div class="nav-section">
+          <ul>
+            <li><a routerLink="/app/inmuebles" routerLinkActive="active">Mis Inmuebles</a></li>
+          </ul>
+        </div>
+      </ng-container>
     </nav>
-    
+
     <div class="sidebar-footer">
-      <button class="btn btn-outline logout-btn" (click)="logout()">Cerrar sesión</button>
+      <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
     </div>
   </aside>
-  
+
   <div class="salma-main-wrapper">
     <header class="salma-topbar">
-      <h1 class="page-title">Panel de Control</h1>
-      <!-- User profile mock -->
+      <span class="page-title">Panel de Control</span>
       <div class="user-profile">
         <div class="avatar"></div>
       </div>
     </header>
-    
     <main class="salma-content">
       <div class="content-container">
         <router-outlet></router-outlet>
