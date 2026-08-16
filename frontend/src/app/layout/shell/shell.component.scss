@@ -3,22 +3,24 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-color: var(--c-bg);
+  background-color: var(--c-bg); /* Fondo gris claro general */
 }
 
 /* Sidebar */
 .salma-sidebar {
   width: 260px;
-  background-color: #1A1D23;
+  background-color: var(--c-surface); /* Blanco puro */
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   z-index: 10;
+  box-shadow: var(--shadow-md); /* Sombra para despegarlo del fondo */
+  border-right: none;
 }
 
 .sidebar-header {
   padding: var(--space-6);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--c-border);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -34,22 +36,23 @@
     }
 
     .logo-text {
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      color: var(--c-primary);
+      font-size: 1.125rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      /* Color oscuro plomo para contrastar con el fondo blanco sin ser negro puro */
+      color: #334155; 
     }
   }
 
   .user-role-badge {
     align-self: flex-start;
-    font-size: 0.6rem;
-    font-weight: 600;
-    padding: 2px 8px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 10px;
     border-radius: var(--radius-full);
-    background-color: rgba(255, 255, 255, 0.07);
-    color: rgba(255, 255, 255, 0.35);
-    letter-spacing: 0.12em;
+    background-color: var(--c-surface-hover);
+    color: var(--c-text-muted);
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
 }
@@ -58,20 +61,21 @@
   padding: var(--space-4) var(--space-3) var(--space-2);
 
   .nav-section-label {
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.22);
+    color: var(--c-text-muted);
     padding: 0 var(--space-4);
     margin-bottom: var(--space-2);
+    opacity: 0.7;
   }
 
   ul {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
   }
 
   a {
@@ -79,22 +83,23 @@
     align-items: center;
     padding: var(--space-3) var(--space-4);
     border-radius: var(--radius-md);
-    border-left: 2px solid transparent;
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 0.875rem;
+    border-left: 3px solid transparent;
+    color: var(--c-text-muted);
+    font-size: 0.9rem;
     font-weight: 500;
     transition: all var(--transition-fast);
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.05);
-      color: rgba(255, 255, 255, 0.75);
+      background-color: var(--c-surface-hover);
+      color: var(--c-text-main);
     }
 
     &.active {
-      background-color: rgba(245, 200, 0, 0.1);
+      background-color: var(--c-surface-hover);
       border-left-color: var(--c-primary);
-      color: #FFFFFF;
+      color: var(--c-text-main);
       font-weight: 600;
+      box-shadow: var(--shadow-sm);
     }
   }
 }
@@ -102,28 +107,28 @@
 .sidebar-nav {
   flex: 1;
   overflow-y: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .sidebar-footer {
-  padding: var(--space-3);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: var(--space-4) var(--space-3);
+  border-top: 1px solid var(--c-border);
 
   .logout-btn {
     width: 100%;
     padding: var(--space-3) var(--space-4);
     border-radius: var(--radius-md);
     background-color: transparent;
-    border: none;
-    color: rgba(255, 255, 255, 0.3);
-    font-size: 0.8rem;
+    border: 1px solid var(--c-border);
+    color: var(--c-text-muted);
+    font-size: 0.875rem;
     font-weight: 500;
     text-align: left;
     cursor: pointer;
     transition: all var(--transition-fast);
 
     &:hover {
-      background-color: rgba(217, 79, 92, 0.12);
+      background-color: rgba(217, 79, 92, 0.05);
+      border-color: var(--c-error);
       color: var(--c-error);
     }
   }
@@ -135,33 +140,36 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  background-color: var(--c-bg); /* Fondo gris claro */
 }
 
 .salma-topbar {
-  height: 60px;
-  background-color: var(--c-surface);
+  height: 64px;
+  background-color: var(--c-surface); /* Blanco puro */
   border-bottom: 1px solid var(--c-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--space-8);
   flex-shrink: 0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
 
   .page-title {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--c-text-muted);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--c-text-main);
   }
 
   .user-profile {
     .avatar {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: var(--radius-full);
-      background-color: #1A1D23;
+      background-color: var(--c-surface-hover);
       display: flex;
       align-items: center;
       justify-content: center;
+      border: 1px solid var(--c-border);
     }
   }
 }
@@ -170,7 +178,6 @@
   flex: 1;
   overflow-y: auto;
   padding: var(--space-8);
-  background-color: var(--c-bg);
 
   .content-container {
     max-width: 1200px;
