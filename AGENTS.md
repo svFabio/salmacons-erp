@@ -16,15 +16,15 @@ El sistema se construye 100% cloud desde el día 1 (Neon + Cloudinary + Render),
 
 ## 2. Stack técnico (NO cambiar sin autorización explícita)
 
-| Capa | Tecnología | Propósito / Restricción |
-|---|---|---|
-| Backend | **NestJS** (Node.js + TypeScript) | API REST, validación, guards de RBAC |
-| Frontend | **Angular** (TypeScript) | SPA multi-rol, portal del cliente |
-| Base de datos | **PostgreSQL** gestionada en **Neon** | Única BD activa. Extensible a Postgres autoalojado — NO usar features propietarias sin equivalente estándar |
-| ORM / acceso a datos | **Prisma** | Capa de repositorios obligatoria (o el que se defina en `/docs/decisions.md`); nunca queries dispersas |
-| Archivos | **Cloudinary** | PDFs, planos, escaneos. NUNCA archivos binarios en PostgreSQL |
-| Hosting | **Render** (principal). Respaldo: Railway/Fly.io (backend), Vercel (frontend) | Código desacoplado del proveedor para migración simple |
-| Lenguaje | **TypeScript en todo el stack** | Tipos/interfaces compartidos entre backend y frontend cuando sea posible |
+| Capa                 | Tecnología                                                                    | Propósito / Restricción                                                                                     |
+| -------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Backend              | **NestJS** (Node.js + TypeScript)                                             | API REST, validación, guards de RBAC                                                                        |
+| Frontend             | **Angular** (TypeScript)                                                      | SPA multi-rol, portal del cliente                                                                           |
+| Base de datos        | **PostgreSQL** gestionada en **Neon**                                         | Única BD activa. Extensible a Postgres autoalojado — NO usar features propietarias sin equivalente estándar |
+| ORM / acceso a datos | **Prisma**                                                                    | Capa de repositorios obligatoria (o el que se defina en `/docs/decisions.md`); nunca queries dispersas      |
+| Archivos             | **Cloudinary**                                                                | PDFs, planos, escaneos. NUNCA archivos binarios en PostgreSQL                                               |
+| Hosting              | **Render** (principal). Respaldo: Railway/Fly.io (backend), Vercel (frontend) | Código desacoplado del proveedor para migración simple                                                      |
+| Lenguaje             | **TypeScript en todo el stack**                                               | Tipos/interfaces compartidos entre backend y frontend cuando sea posible                                    |
 
 ### Regla estricta de tipado — PROHIBIDO `any`
 
@@ -81,14 +81,14 @@ Regla de capas: Controller → Service → Repository → Prisma. Cada capa habl
 
 ## 4. Épicas del sistema y su GOAL
 
-| # | Épica | GOAL (para qué existe) |
-|---|---|---|
-| 1 | **Gestión de Clientes e Inmuebles** | Mantener el directorio maestro (clientes + inmuebles + relación M:N). Sin esto, ningún trámite tiene a qué colgarse. Alta/edición de clientes, inmuebles (matrícula, código catastral, dirección, superficie) y asociación M:N. |
-| 2 | **Gestión Legal** | Espacio de trabajo del abogado para la parte jurídica de cada trámite, con registro de cada paso. Asignación de trámites legales, documentación legal, presentaciones ante entidades (Derechos Reales), observaciones legales y resolución, actualización de estado vía motor de seguimiento. Esta épica ESCRIBE el estado de trámites legales. |
-| 3 | **Gestión Técnica** | Equivalente del abogado, pero para el arquitecto: parte técnica/constructiva. Flujos legal y técnico avanzan en paralelo sin pisarse. Planos versionados, mediciones/inspecciones, observaciones técnicas, actualización de estado vía motor. Esta épica ESCRIBE el estado de trámites técnicos. |
-| 4 | **Seguimiento de Trámites** | Única fuente de verdad sobre "en qué estado está cada trámite y qué le falta", genérica para los ~40 tipos. Estados/transiciones válidas, % de avance, motivo de bloqueo, historial completo (quién/cuándo/por qué). Gestión Legal y Técnica disparan; esta épica modela, guarda y expone. |
-| 5 | **Portal del Cliente** | Que el cliente entienda de un vistazo el avance de cada trámite sin llamar a la oficina. Inmuebles del cliente, trámites por inmueble, barra de progreso, estado en lenguaje claro, motivo de bloqueo, última actualización. SOLO LECTURA — el cliente nunca edita. |
-| 6 | **Gestión de Usuarios y Roles** | Controlar quién entra y qué ve/hace cada quien. Usuarios internos + rol, autenticación, autorización en CADA endpoint del backend (no solo ocultar botones), asociación de usuarios a la cartera de casos que les corresponde ver. |
+| #   | Épica                               | GOAL (para qué existe)                                                                                                                                                                                                                                                                                                                          |
+| --- | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Gestión de Clientes e Inmuebles** | Mantener el directorio maestro (clientes + inmuebles + relación M:N). Sin esto, ningún trámite tiene a qué colgarse. Alta/edición de clientes, inmuebles (matrícula, código catastral, dirección, superficie) y asociación M:N.                                                                                                                 |
+| 2   | **Gestión Legal**                   | Espacio de trabajo del abogado para la parte jurídica de cada trámite, con registro de cada paso. Asignación de trámites legales, documentación legal, presentaciones ante entidades (Derechos Reales), observaciones legales y resolución, actualización de estado vía motor de seguimiento. Esta épica ESCRIBE el estado de trámites legales. |
+| 3   | **Gestión Técnica**                 | Equivalente del abogado, pero para el arquitecto: parte técnica/constructiva. Flujos legal y técnico avanzan en paralelo sin pisarse. Planos versionados, mediciones/inspecciones, observaciones técnicas, actualización de estado vía motor. Esta épica ESCRIBE el estado de trámites técnicos.                                                |
+| 4   | **Seguimiento de Trámites**         | Única fuente de verdad sobre "en qué estado está cada trámite y qué le falta", genérica para los ~40 tipos. Estados/transiciones válidas, % de avance, motivo de bloqueo, historial completo (quién/cuándo/por qué). Gestión Legal y Técnica disparan; esta épica modela, guarda y expone.                                                      |
+| 5   | **Portal del Cliente**              | Que el cliente entienda de un vistazo el avance de cada trámite sin llamar a la oficina. Inmuebles del cliente, trámites por inmueble, barra de progreso, estado en lenguaje claro, motivo de bloqueo, última actualización. SOLO LECTURA — el cliente nunca edita.                                                                             |
+| 6   | **Gestión de Usuarios y Roles**     | Controlar quién entra y qué ve/hace cada quien. Usuarios internos + rol, autenticación, autorización en CADA endpoint del backend (no solo ocultar botones), asociación de usuarios a la cartera de casos que les corresponde ver.                                                                                                              |
 
 ---
 
@@ -96,14 +96,14 @@ Regla de capas: Controller → Service → Repository → Prisma. Cada capa habl
 
 ### Nombres de archivos (NestJS)
 
-| Tipo | Convención | Ejemplo |
-|---|---|---|
-| Módulo | `camelCase.module.ts` | `tramites.module.ts` |
-| Controller | `camelCase.controller.ts` | `tramites.controller.ts` |
-| Service | `camelCase.service.ts` | `tramites.service.ts` |
-| Repository | `camelCase.repository.ts` | `tramites.repository.ts` |
-| DTO | `camelCase.dto.ts` (o `*.dto.ts`) | `crear-tramite.dto.ts` |
-| Guard/Decorador | PascalCase | `RolesGuard.ts`, `@Roles()` |
+| Tipo            | Convención                        | Ejemplo                     |
+| --------------- | --------------------------------- | --------------------------- |
+| Módulo          | `camelCase.module.ts`             | `tramites.module.ts`        |
+| Controller      | `camelCase.controller.ts`         | `tramites.controller.ts`    |
+| Service         | `camelCase.service.ts`            | `tramites.service.ts`       |
+| Repository      | `camelCase.repository.ts`         | `tramites.repository.ts`    |
+| DTO             | `camelCase.dto.ts` (o `*.dto.ts`) | `crear-tramite.dto.ts`      |
+| Guard/Decorador | PascalCase                        | `RolesGuard.ts`, `@Roles()` |
 
 ### Identificadores
 
@@ -138,6 +138,7 @@ Reglas obligatorias:
 - Tests de integración: `pnpm run test:e2e`.
 - Cobertura: `pnpm run test:cov`. La nueva lógica de dominio no debe reducir la cobertura global del módulo que toca.
 - **CI**: la suite completa (`pnpm run lint`, `pnpm run test`, `pnpm run build`, `pnpm run test:e2e`) corre en GitHub Actions en cada push a `main` y en cada PR. Un PR con tests en rojo no se fusiona.
+- **Typecheck de specs (obligatorio antes de commitear en el backend)**: `nest build` EXCLUYE los `*.spec.ts` y jest los transpila sin typecheck completo. El único gate que tipa los specs del backend es `pnpm exec tsc --noEmit` (corre en CI como `typecheck-backend`). Tras modificar o crear cualquier spec del backend, ejecutar `pnpm exec tsc --noEmit` localmente y dejarlo limpio ANTES de commitear.
 
 ### Commits
 
