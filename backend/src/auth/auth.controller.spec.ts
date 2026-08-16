@@ -76,7 +76,7 @@ describe('AuthController', () => {
       const meHandler = Object.getOwnPropertyDescriptor(
         AuthController.prototype,
         'me',
-      )?.value as unknown;
+      )?.value as object;
       const guards = Reflect.getMetadata('__guards__', meHandler) as unknown[];
 
       expect(guards).toContain(JwtAuthGuard);
