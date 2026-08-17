@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClienteService } from '../../core/services/cliente.service';
+import { LoggerService } from '../../core/services/logger.service';
 import { Cliente } from '../../core/models/cliente.model';
 
 @Component({
@@ -13,12 +14,15 @@ import { Cliente } from '../../core/models/cliente.model';
 })
 export class ClientesComponent implements OnInit {
   private clienteService = inject(ClienteService);
+  private logger = inject(LoggerService);
   private fb = inject(FormBuilder);
 
   clientes: Cliente[] = [];
   loading = true;
   error: string | null = null;
   editingId: string | null = null;
+  showDrawer = false;
+
   form: FormGroup = this.fb.group({
     nombres: ['', Validators.required],
     apellidos: ['', Validators.required],
@@ -31,8 +35,6 @@ export class ClientesComponent implements OnInit {
   ngOnInit(): void {
     this.loadClientes();
   }
-
-  showDrawer = false;
 
   onNuevoCliente(): void {
     this.editingId = null;
@@ -54,7 +56,8 @@ export class ClientesComponent implements OnInit {
         this.clientes = data;
         this.loading = false;
       },
-      error: () => {
+      error: (err: unknown) => {
+        this.logger.error('ClientesComponent.loadClientes', err);
         this.error = 'Error loading clients';
         this.loading = false;
       },
@@ -92,7 +95,8 @@ export class ClientesComponent implements OnInit {
           this.cerrarDrawer();
           this.loadClientes();
         },
-        error: () => {
+        error: (err: unknown) => {
+          this.logger.error('ClientesComponent.save (update)', err);
           this.error = 'Error updating client';
         },
       });
@@ -102,7 +106,8 @@ export class ClientesComponent implements OnInit {
           this.cerrarDrawer();
           this.loadClientes();
         },
-        error: () => {
+        error: (err: unknown) => {
+          this.logger.error('ClientesComponent.save (create)', err);
           this.error = 'Error creating client';
         },
       });
@@ -112,8 +117,9 @@ export class ClientesComponent implements OnInit {
   delete(id: string): void {
     this.clienteService.remove(id).subscribe({
       next: () => this.loadClientes(),
-      error: () => {
-        this.error = 'Error al eliminar cliente';
+      error: (err: unknown) => {
+        this.logger.error('ClientesComponent.delete', err);
+        this.error = 'Error deleting client';
       },
     });
   }
