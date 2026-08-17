@@ -23,7 +23,7 @@ export class InmueblesComponent implements OnInit {
   editingId: string | null = null;
   showDrawer = false;
 
-  form = this.fb.group({
+  form = this.fb.nonNullable.group({
     direccion: ['', Validators.required],
     matricula: [''],
     codigoCatastral: [''],
@@ -85,7 +85,7 @@ export class InmueblesComponent implements OnInit {
       return;
     }
 
-    const value = this.form.value;
+    const value = this.form.getRawValue();
 
     if (this.editingId) {
       this.inmuebleService.update(this.editingId, value).subscribe({

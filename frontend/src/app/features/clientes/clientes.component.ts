@@ -23,7 +23,7 @@ export class ClientesComponent implements OnInit {
   editingId: string | null = null;
   showDrawer = false;
 
-  form = this.fb.group({
+  form = this.fb.nonNullable.group({
     nombres: ['', Validators.required],
     apellidos: ['', Validators.required],
     ci: ['', Validators.required],
@@ -87,7 +87,7 @@ export class ClientesComponent implements OnInit {
       return;
     }
 
-    const value = this.form.value;
+    const value = this.form.getRawValue();
 
     if (this.editingId) {
       this.clienteService.update(this.editingId, value).subscribe({
