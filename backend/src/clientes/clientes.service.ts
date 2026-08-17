@@ -6,17 +6,17 @@ import {
 import { ClientesRepository } from '../repositories/clientes.repository';
 import { CrearClienteDto } from './dto/crear-cliente.dto';
 import { ActualizarClienteDto } from './dto/actualizar-cliente.dto';
-import { Cliente } from '@prisma/client';
+import { ClienteConInmuebles } from '../common/types/prisma-relations.types';
 
 @Injectable()
 export class ClientesService {
   constructor(private readonly clientesRepository: ClientesRepository) {}
 
-  async findAll(): Promise<Cliente[]> {
+  async findAll(): Promise<ClienteConInmuebles[]> {
     return this.clientesRepository.findAll();
   }
 
-  async findById(id: string): Promise<Cliente> {
+  async findById(id: string): Promise<ClienteConInmuebles> {
     const cliente = await this.clientesRepository.findById(id);
     if (!cliente) {
       throw new NotFoundException(`Cliente con ID ${id} no encontrado`);
@@ -24,7 +24,9 @@ export class ClientesService {
     return cliente;
   }
 
-  async create(createClienteDto: CrearClienteDto): Promise<Cliente> {
+  async create(
+    createClienteDto: CrearClienteDto,
+  ): Promise<ClienteConInmuebles> {
     const existente = await this.clientesRepository.findByCi(
       createClienteDto.ci,
     );
@@ -39,7 +41,7 @@ export class ClientesService {
   async update(
     id: string,
     updateClienteDto: ActualizarClienteDto,
-  ): Promise<Cliente> {
+  ): Promise<ClienteConInmuebles> {
     await this.findById(id); // verifica si existe
     if (updateClienteDto.ci) {
       const existente = await this.clientesRepository.findByCi(
