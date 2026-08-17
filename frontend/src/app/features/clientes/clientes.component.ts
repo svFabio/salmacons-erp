@@ -35,11 +35,15 @@ export class ClientesComponent implements OnInit {
   showDrawer = false;
 
   onNuevoCliente(): void {
+    this.editingId = null;
+    this.form.reset();
     this.showDrawer = true;
   }
 
   cerrarDrawer(): void {
     this.showDrawer = false;
+    this.editingId = null;
+    this.form.reset();
   }
 
   loadClientes(): void {
@@ -51,15 +55,10 @@ export class ClientesComponent implements OnInit {
         this.loading = false;
       },
       error: () => {
-        this.error = 'Error al cargar clientes';
+        this.error = 'Error loading clients';
         this.loading = false;
       },
     });
-  }
-
-  startCreate(): void {
-    this.editingId = null;
-    this.form.reset();
   }
 
   startEdit(cliente: Cliente): void {
@@ -72,11 +71,11 @@ export class ClientesComponent implements OnInit {
       telefono: cliente.telefono ?? '',
       direccion: cliente.direccion ?? '',
     });
+    this.showDrawer = true;
   }
 
   cancelForm(): void {
-    this.editingId = null;
-    this.form.reset();
+    this.cerrarDrawer();
   }
 
   save(): void {
@@ -90,21 +89,21 @@ export class ClientesComponent implements OnInit {
     if (this.editingId) {
       this.clienteService.update(this.editingId, value).subscribe({
         next: () => {
-          this.cancelForm();
+          this.cerrarDrawer();
           this.loadClientes();
         },
         error: () => {
-          this.error = 'Error al actualizar cliente';
+          this.error = 'Error updating client';
         },
       });
     } else {
       this.clienteService.create(value).subscribe({
         next: () => {
-          this.cancelForm();
+          this.cerrarDrawer();
           this.loadClientes();
         },
         error: () => {
-          this.error = 'Error al crear cliente';
+          this.error = 'Error creating client';
         },
       });
     }

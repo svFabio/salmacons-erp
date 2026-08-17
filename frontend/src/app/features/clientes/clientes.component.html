@@ -1,7 +1,7 @@
 <div class="clientes-container">
   <div class="table-header">
-    <h3>Clientes</h3>
-    <button class="btn btn-primary" (click)="startCreate()">+ Nuevo Cliente</button>
+    <h3>Clients</h3>
+    <button class="btn btn-primary" (click)="onNuevoCliente()">+ New Client</button>
   </div>
 
   <div *ngIf="error" class="error-banner">
@@ -10,22 +10,22 @@
   </div>
 
   <div *ngIf="loading" class="loading-state">
-    Cargando...
+    Loading...
   </div>
 
   <div *ngIf="!loading && clientes.length === 0" class="empty-state">
-    No hay clientes registrados.
+    No clients registered yet.
   </div>
 
   <div *ngIf="!loading && clientes.length > 0" class="card">
     <table class="data-table">
       <thead>
         <tr>
-          <th>Nombre</th>
-          <th>CI</th>
+          <th>Name</th>
+          <th>ID</th>
           <th>Email</th>
-          <th>Teléfono</th>
-          <th>Acciones</th>
+          <th>Phone</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -35,97 +35,80 @@
           <td>{{ c.email || '—' }}</td>
           <td>{{ c.telefono || '—' }}</td>
           <td class="actions">
-            <button class="btn btn-outline btn-sm" (click)="startEdit(c)">Editar</button>
-            <button class="btn btn-accent btn-sm" (click)="delete(c.id)">Eliminar</button>
+            <button class="btn btn-outline btn-sm" (click)="startEdit(c)">Edit</button>
+            <button class="btn btn-accent btn-sm" (click)="delete(c.id)">Delete</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+</div>
 
-  <!-- Drawer / Modal Lateral -->
-  <div class="salma-drawer-overlay" *ngIf="showDrawer" (click)="cerrarDrawer()"></div>
-  <div class="salma-drawer" [class.open]="showDrawer">
-    <div class="drawer-header">
-      <h3>Nuevo Cliente</h3>
-      <button class="btn-close" (click)="cerrarDrawer()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
-    </div>
-    
-    <div class="drawer-body">
-      <form class="salma-form">
-        <div class="input-group">
-          <label>Nombres *</label>
-          <input type="text" placeholder="Ej. Juan Carlos" />
-        </div>
-        <div class="input-group">
-          <label>Apellidos *</label>
-          <input type="text" placeholder="Ej. Pérez Gómez" />
-        </div>
-        <div class="input-group">
-          <label>Carnet de Identidad (CI) *</label>
-          <input type="text" placeholder="Ej. 1234567" />
-        </div>
-        
-        <div class="divider"><span>Opcional</span></div>
-        
-        <div class="input-group">
-          <label>Email</label>
-          <input type="email" placeholder="correo@ejemplo.com" />
-        </div>
-        <div class="input-group">
-          <label>Teléfono</label>
-          <input type="tel" placeholder="+591 70000000" />
-        </div>
-        <div class="input-group">
-          <label>Dirección</label>
-          <textarea placeholder="Ej. Av. América #123" rows="3"></textarea>
-        </div>
-      </form>
-    </div>
+<!-- Drawer overlay -->
+<div class="salma-drawer-overlay" *ngIf="showDrawer" (click)="cerrarDrawer()"></div>
 
-    <div class="drawer-footer">
-      <button class="btn btn-outline" (click)="cerrarDrawer()">Cancelar</button>
-      <button class="btn btn-primary">Guardar Cliente</button>
-    </div>
+<!-- Drawer panel -->
+<div class="salma-drawer" [class.open]="showDrawer">
+  <div class="drawer-header">
+    <h3>{{ editingId ? 'Edit Client' : 'New Client' }}</h3>
+    <button class="btn-close" (click)="cerrarDrawer()" type="button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
   </div>
 
-  <div class="card form-card" *ngIf="editingId !== null || form.touched">
-    <h4>{{ editingId ? 'Editar Cliente' : 'Nuevo Cliente' }}</h4>
-    <form [formGroup]="form" (ngSubmit)="save()">
-      <div class="form-grid">
-        <div class="input-group">
-          <label for="nombres">Nombres *</label>
-          <input id="nombres" formControlName="nombres" placeholder="Nombres">
-        </div>
-        <div class="input-group">
-          <label for="apellidos">Apellidos *</label>
-          <input id="apellidos" formControlName="apellidos" placeholder="Apellidos">
-        </div>
-        <div class="input-group">
-          <label for="ci">CI *</label>
-          <input id="ci" formControlName="ci" placeholder="Carnet de identidad">
-        </div>
-        <div class="input-group">
-          <label for="email">Email</label>
-          <input id="email" formControlName="email" type="email" placeholder="email@ejemplo.com">
-        </div>
-        <div class="input-group">
-          <label for="telefono">Teléfono</label>
-          <input id="telefono" formControlName="telefono" placeholder="555-0000">
-        </div>
-        <div class="input-group">
-          <label for="direccion">Dirección</label>
-          <input id="direccion" formControlName="direccion" placeholder="Dirección">
-        </div>
+  <div class="drawer-body">
+    <form [formGroup]="form" id="cliente-form" (ngSubmit)="save()">
+      <div class="input-group">
+        <label for="nombres">First name(s) *</label>
+        <input id="nombres" type="text" formControlName="nombres" placeholder="e.g. Juan Carlos" />
+        <span class="field-error" *ngIf="form.get('nombres')?.invalid && form.get('nombres')?.touched">
+          Required field.
+        </span>
       </div>
-      <div class="form-actions">
-        <button type="button" class="btn btn-outline" (click)="cancelForm()">Cancelar</button>
-        <button type="submit" class="btn btn-primary">
-          {{ editingId ? 'Actualizar' : 'Crear' }}
-        </button>
+
+      <div class="input-group">
+        <label for="apellidos">Last name(s) *</label>
+        <input id="apellidos" type="text" formControlName="apellidos" placeholder="e.g. Pérez Gómez" />
+        <span class="field-error" *ngIf="form.get('apellidos')?.invalid && form.get('apellidos')?.touched">
+          Required field.
+        </span>
+      </div>
+
+      <div class="input-group">
+        <label for="ci">National ID (CI) *</label>
+        <input id="ci" type="text" formControlName="ci" placeholder="e.g. 1234567" />
+        <span class="field-error" *ngIf="form.get('ci')?.invalid && form.get('ci')?.touched">
+          Required field.
+        </span>
+      </div>
+
+      <div class="divider"><span>Optional</span></div>
+
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" placeholder="email@example.com" />
+      </div>
+
+      <div class="input-group">
+        <label for="telefono">Phone</label>
+        <input id="telefono" type="tel" formControlName="telefono" placeholder="+591 70000000" />
+      </div>
+
+      <div class="input-group">
+        <label for="direccion">Address</label>
+        <textarea id="direccion" formControlName="direccion" placeholder="e.g. Av. América #123" rows="3"></textarea>
       </div>
     </form>
+  </div>
+
+  <div class="drawer-footer">
+    <button class="btn btn-outline" type="button" (click)="cerrarDrawer()">Cancel</button>
+    <button class="btn btn-primary" type="submit" form="cliente-form">
+      {{ editingId ? 'Update' : 'Save' }}
+    </button>
   </div>
 </div>
