@@ -58,7 +58,7 @@ export class ClientesComponent implements OnInit {
       },
       error: (err: unknown) => {
         this.logger.error('ClientesComponent.loadClientes', err);
-        this.error = 'Error loading clients';
+        this.error = 'Error al cargar clientes';
         this.loading = false;
       },
     });
@@ -97,7 +97,7 @@ export class ClientesComponent implements OnInit {
         },
         error: (err: unknown) => {
           this.logger.error('ClientesComponent.save (update)', err);
-          this.error = 'Error updating client';
+          this.error = 'Error al actualizar cliente';
         },
       });
     } else {
@@ -108,7 +108,7 @@ export class ClientesComponent implements OnInit {
         },
         error: (err: unknown) => {
           this.logger.error('ClientesComponent.save (create)', err);
-          this.error = 'Error creating client';
+          this.error = 'Error al crear cliente';
         },
       });
     }
@@ -119,7 +119,7 @@ export class ClientesComponent implements OnInit {
       next: () => this.loadClientes(),
       error: (err: unknown) => {
         this.logger.error('ClientesComponent.delete', err);
-        this.error = 'Error deleting client';
+        this.error = 'Error al eliminar cliente';
       },
     });
   }

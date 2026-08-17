@@ -57,7 +57,7 @@ export class InmueblesComponent implements OnInit {
       },
       error: (err: unknown) => {
         this.logger.error('InmueblesComponent.loadInmuebles', err);
-        this.error = 'Error loading properties';
+        this.error = 'Error al cargar inmuebles';
         this.loading = false;
       },
     });
@@ -95,7 +95,7 @@ export class InmueblesComponent implements OnInit {
         },
         error: (err: unknown) => {
           this.logger.error('InmueblesComponent.save (update)', err);
-          this.error = 'Error updating property';
+          this.error = 'Error al actualizar inmueble';
         },
       });
     } else {
@@ -106,7 +106,7 @@ export class InmueblesComponent implements OnInit {
         },
         error: (err: unknown) => {
           this.logger.error('InmueblesComponent.save (create)', err);
-          this.error = 'Error creating property';
+          this.error = 'Error al crear inmueble';
         },
       });
     }
@@ -117,7 +117,7 @@ export class InmueblesComponent implements OnInit {
       next: () => this.loadInmuebles(),
       error: (err: unknown) => {
         this.logger.error('InmueblesComponent.delete', err);
-        this.error = 'Error deleting property';
+        this.error = 'Error al eliminar inmueble';
       },
     });
   }

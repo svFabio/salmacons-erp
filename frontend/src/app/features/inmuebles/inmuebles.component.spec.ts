@@ -10,7 +10,7 @@ describe('InmueblesComponent', () => {
   let component: InmueblesComponent;
   let fixture: ComponentFixture<InmueblesComponent>;
   let httpMock: HttpTestingController;
-  let loggerSpy: { error: jest.Mock; warn: jest.Mock };
+  let loggerSpy: { error: ReturnType<typeof vi.fn>; warn: ReturnType<typeof vi.fn> };
 
   const mockInmuebles: Inmueble[] = [
     {
@@ -26,7 +26,7 @@ describe('InmueblesComponent', () => {
   ];
 
   beforeEach(async () => {
-    loggerSpy = { error: jest.fn(), warn: jest.fn() };
+    loggerSpy = { error: vi.fn(), warn: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [InmueblesComponent],
@@ -68,7 +68,7 @@ describe('InmueblesComponent', () => {
       const req = httpMock.expectOne(`${environment.apiUrl}/inmuebles`);
       req.flush('Error', { status: 500, statusText: 'Server Error' });
 
-      expect(component.error).toBe('Error loading properties');
+      expect(component.error).toBe('Error al cargar inmuebles');
       expect(component.loading).toBeFalsy();
       expect(loggerSpy.error).toHaveBeenCalledWith(
         'InmueblesComponent.loadInmuebles',
@@ -137,7 +137,7 @@ describe('InmueblesComponent', () => {
       const req = httpMock.expectOne(`${environment.apiUrl}/inmuebles`);
       req.flush('Error', { status: 500, statusText: 'Server Error' });
 
-      expect(component.error).toBe('Error creating property');
+      expect(component.error).toBe('Error al crear inmueble');
       expect(loggerSpy.error).toHaveBeenCalledWith(
         'InmueblesComponent.save (create)',
         expect.anything(),
@@ -165,7 +165,7 @@ describe('InmueblesComponent', () => {
       const req = httpMock.expectOne(`${environment.apiUrl}/inmuebles/1`);
       req.flush('Error', { status: 500, statusText: 'Server Error' });
 
-      expect(component.error).toBe('Error updating property');
+      expect(component.error).toBe('Error al actualizar inmueble');
       expect(loggerSpy.error).toHaveBeenCalledWith(
         'InmueblesComponent.save (update)',
         expect.anything(),
@@ -196,7 +196,7 @@ describe('InmueblesComponent', () => {
       const req = httpMock.expectOne(`${environment.apiUrl}/inmuebles/1`);
       req.flush('Error', { status: 500, statusText: 'Server Error' });
 
-      expect(component.error).toBe('Error deleting property');
+      expect(component.error).toBe('Error al eliminar inmueble');
       expect(loggerSpy.error).toHaveBeenCalledWith(
         'InmueblesComponent.delete',
         expect.anything(),

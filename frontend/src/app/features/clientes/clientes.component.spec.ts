@@ -69,7 +69,7 @@ describe('ClientesComponent', () => {
       const req = httpMock.expectOne(`${environment.apiUrl}/clientes`);
       req.flush('Error', { status: 500, statusText: 'Server Error' });
 
-      expect(component.error).toBe('Error loading clients');
+      expect(component.error).toBe('Error al cargar clientes');
       expect(component.loading).toBeFalsy();
       expect(loggerSpy.error).toHaveBeenCalledWith(
         'ClientesComponent.loadClientes',
@@ -144,7 +144,7 @@ describe('ClientesComponent', () => {
       const req = httpMock.expectOne(`${environment.apiUrl}/clientes`);
       req.flush('Error', { status: 500, statusText: 'Server Error' });
 
-      expect(component.error).toBe('Error creating client');
+      expect(component.error).toBe('Error al crear cliente');
       expect(loggerSpy.error).toHaveBeenCalledWith(
         'ClientesComponent.save (create)',
         expect.anything(),
@@ -178,7 +178,7 @@ describe('ClientesComponent', () => {
       const req = httpMock.expectOne(`${environment.apiUrl}/clientes/1`);
       req.flush('Error', { status: 500, statusText: 'Server Error' });
 
-      expect(component.error).toBe('Error updating client');
+      expect(component.error).toBe('Error al actualizar cliente');
       expect(loggerSpy.error).toHaveBeenCalledWith(
         'ClientesComponent.save (update)',
         expect.anything(),
@@ -209,7 +209,7 @@ describe('ClientesComponent', () => {
       const req = httpMock.expectOne(`${environment.apiUrl}/clientes/1`);
       req.flush('Error', { status: 500, statusText: 'Server Error' });
 
-      expect(component.error).toBe('Error deleting client');
+      expect(component.error).toBe('Error al eliminar cliente');
       expect(loggerSpy.error).toHaveBeenCalledWith(
         'ClientesComponent.delete',
         expect.anything(),

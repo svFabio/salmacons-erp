@@ -1,7 +1,7 @@
 <div class="inmuebles-container">
   <div class="table-header">
-    <h3>Properties</h3>
-    <button class="btn btn-primary" (click)="onNuevoInmueble()">+ New Property</button>
+    <h3>Inmuebles</h3>
+    <button class="btn btn-primary" (click)="onNuevoInmueble()">+ Nuevo Inmueble</button>
   </div>
 
   <div *ngIf="error" class="error-banner">
@@ -10,22 +10,22 @@
   </div>
 
   <div *ngIf="loading" class="loading-state">
-    Loading...
+    Cargando...
   </div>
 
   <div *ngIf="!loading && inmuebles.length === 0" class="empty-state">
-    No properties registered yet.
+    No hay inmuebles registrados.
   </div>
 
   <div *ngIf="!loading && inmuebles.length > 0" class="card">
     <table class="data-table">
       <thead>
         <tr>
-          <th>Address</th>
-          <th>Registry No.</th>
-          <th>Cadastral Code</th>
-          <th>Area</th>
-          <th>Actions</th>
+          <th>Dirección</th>
+          <th>Matrícula</th>
+          <th>Código Catastral</th>
+          <th>Superficie</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -35,8 +35,8 @@
           <td>{{ i.codigoCatastral || '—' }}</td>
           <td>{{ i.superficie ? (i.superficie + ' m²') : '—' }}</td>
           <td class="actions">
-            <button class="btn btn-outline btn-sm" (click)="startEdit(i)">Edit</button>
-            <button class="btn btn-accent btn-sm" (click)="delete(i.id)">Delete</button>
+            <button class="btn btn-outline btn-sm" (click)="startEdit(i)">Editar</button>
+            <button class="btn btn-accent btn-sm" (click)="delete(i.id)">Eliminar</button>
           </td>
         </tr>
       </tbody>
@@ -44,13 +44,13 @@
   </div>
 </div>
 
-<!-- Drawer overlay -->
+<!-- Overlay -->
 <div class="salma-drawer-overlay" *ngIf="showDrawer" (click)="cerrarDrawer()"></div>
 
-<!-- Drawer panel -->
+<!-- Panel lateral -->
 <div class="salma-drawer" [class.open]="showDrawer">
   <div class="drawer-header">
-    <h3>{{ editingId ? 'Edit Property' : 'New Property' }}</h3>
+    <h3>{{ editingId ? 'Editar Inmueble' : 'Nuevo Inmueble' }}</h3>
     <button class="btn-close" (click)="cerrarDrawer()" type="button">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -63,43 +63,43 @@
   <div class="drawer-body">
     <form [formGroup]="form" id="inmueble-form" (ngSubmit)="save()">
       <div class="input-group">
-        <label for="direccion">Address *</label>
-        <input id="direccion" type="text" formControlName="direccion" placeholder="e.g. Av. América #123" />
+        <label for="direccion">Dirección *</label>
+        <input id="direccion" type="text" formControlName="direccion" placeholder="Ej. Av. América #123" />
         <span class="field-error" *ngIf="form.get('direccion')?.invalid && form.get('direccion')?.touched">
-          Required field.
+          Campo obligatorio.
         </span>
       </div>
 
-      <div class="divider"><span>Registry</span></div>
+      <div class="divider"><span>Datos de registro</span></div>
 
       <div class="input-group">
-        <label for="matricula">Registry Number</label>
-        <input id="matricula" type="text" formControlName="matricula" placeholder="e.g. 7011010012345" />
+        <label for="matricula">Matrícula Inmobiliaria</label>
+        <input id="matricula" type="text" formControlName="matricula" placeholder="Ej. 7011010012345" />
       </div>
 
       <div class="input-group">
-        <label for="codigoCatastral">Cadastral Code</label>
-        <input id="codigoCatastral" type="text" formControlName="codigoCatastral" placeholder="e.g. 3-0123-4567" />
+        <label for="codigoCatastral">Código Catastral</label>
+        <input id="codigoCatastral" type="text" formControlName="codigoCatastral" placeholder="Ej. 3-0123-4567" />
       </div>
 
-      <div class="divider"><span>Details</span></div>
+      <div class="divider"><span>Detalles</span></div>
 
       <div class="input-group">
-        <label for="superficie">Area (m²)</label>
+        <label for="superficie">Superficie (m²)</label>
         <input id="superficie" type="number" formControlName="superficie" placeholder="0" min="0" />
       </div>
 
       <div class="input-group">
-        <label for="descripcion">Description</label>
-        <textarea id="descripcion" formControlName="descripcion" placeholder="Additional details about the property" rows="3"></textarea>
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" formControlName="descripcion" placeholder="Descripción adicional del inmueble" rows="3"></textarea>
       </div>
     </form>
   </div>
 
   <div class="drawer-footer">
-    <button class="btn btn-outline" type="button" (click)="cerrarDrawer()">Cancel</button>
+    <button class="btn btn-outline" type="button" (click)="cerrarDrawer()">Cancelar</button>
     <button class="btn btn-primary" type="submit" form="inmueble-form">
-      {{ editingId ? 'Update' : 'Save' }}
+      {{ editingId ? 'Actualizar' : 'Guardar' }}
     </button>
   </div>
 </div>

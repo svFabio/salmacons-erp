@@ -1,7 +1,7 @@
 <div class="clientes-container">
   <div class="table-header">
-    <h3>Clients</h3>
-    <button class="btn btn-primary" (click)="onNuevoCliente()">+ New Client</button>
+    <h3>Clientes</h3>
+    <button class="btn btn-primary" (click)="onNuevoCliente()">+ Nuevo Cliente</button>
   </div>
 
   <div *ngIf="error" class="error-banner">
@@ -10,22 +10,22 @@
   </div>
 
   <div *ngIf="loading" class="loading-state">
-    Loading...
+    Cargando...
   </div>
 
   <div *ngIf="!loading && clientes.length === 0" class="empty-state">
-    No clients registered yet.
+    No hay clientes registrados.
   </div>
 
   <div *ngIf="!loading && clientes.length > 0" class="card">
     <table class="data-table">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>ID</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Actions</th>
+          <th>Nombre</th>
+          <th>CI</th>
+          <th>Correo electrónico</th>
+          <th>Teléfono</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -35,8 +35,8 @@
           <td>{{ c.email || '—' }}</td>
           <td>{{ c.telefono || '—' }}</td>
           <td class="actions">
-            <button class="btn btn-outline btn-sm" (click)="startEdit(c)">Edit</button>
-            <button class="btn btn-accent btn-sm" (click)="delete(c.id)">Delete</button>
+            <button class="btn btn-outline btn-sm" (click)="startEdit(c)">Editar</button>
+            <button class="btn btn-accent btn-sm" (click)="delete(c.id)">Eliminar</button>
           </td>
         </tr>
       </tbody>
@@ -44,13 +44,13 @@
   </div>
 </div>
 
-<!-- Drawer overlay -->
+<!-- Overlay -->
 <div class="salma-drawer-overlay" *ngIf="showDrawer" (click)="cerrarDrawer()"></div>
 
-<!-- Drawer panel -->
+<!-- Panel lateral -->
 <div class="salma-drawer" [class.open]="showDrawer">
   <div class="drawer-header">
-    <h3>{{ editingId ? 'Edit Client' : 'New Client' }}</h3>
+    <h3>{{ editingId ? 'Editar Cliente' : 'Nuevo Cliente' }}</h3>
     <button class="btn-close" (click)="cerrarDrawer()" type="button">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -63,52 +63,52 @@
   <div class="drawer-body">
     <form [formGroup]="form" id="cliente-form" (ngSubmit)="save()">
       <div class="input-group">
-        <label for="nombres">First name(s) *</label>
-        <input id="nombres" type="text" formControlName="nombres" placeholder="e.g. Juan Carlos" />
+        <label for="nombres">Nombres *</label>
+        <input id="nombres" type="text" formControlName="nombres" placeholder="Ej. Juan Carlos" />
         <span class="field-error" *ngIf="form.get('nombres')?.invalid && form.get('nombres')?.touched">
-          Required field.
+          Campo obligatorio.
         </span>
       </div>
 
       <div class="input-group">
-        <label for="apellidos">Last name(s) *</label>
-        <input id="apellidos" type="text" formControlName="apellidos" placeholder="e.g. Pérez Gómez" />
+        <label for="apellidos">Apellidos *</label>
+        <input id="apellidos" type="text" formControlName="apellidos" placeholder="Ej. Pérez Gómez" />
         <span class="field-error" *ngIf="form.get('apellidos')?.invalid && form.get('apellidos')?.touched">
-          Required field.
+          Campo obligatorio.
         </span>
       </div>
 
       <div class="input-group">
-        <label for="ci">National ID (CI) *</label>
-        <input id="ci" type="text" formControlName="ci" placeholder="e.g. 1234567" />
+        <label for="ci">Carnet de Identidad (CI) *</label>
+        <input id="ci" type="text" formControlName="ci" placeholder="Ej. 1234567" />
         <span class="field-error" *ngIf="form.get('ci')?.invalid && form.get('ci')?.touched">
-          Required field.
+          Campo obligatorio.
         </span>
       </div>
 
-      <div class="divider"><span>Optional</span></div>
+      <div class="divider"><span>Opcional</span></div>
 
       <div class="input-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" placeholder="email@example.com" />
+        <label for="email">Correo electrónico</label>
+        <input id="email" type="email" formControlName="email" placeholder="correo@ejemplo.com" />
       </div>
 
       <div class="input-group">
-        <label for="telefono">Phone</label>
+        <label for="telefono">Teléfono</label>
         <input id="telefono" type="tel" formControlName="telefono" placeholder="+591 70000000" />
       </div>
 
       <div class="input-group">
-        <label for="direccion">Address</label>
-        <textarea id="direccion" formControlName="direccion" placeholder="e.g. Av. América #123" rows="3"></textarea>
+        <label for="direccion">Dirección</label>
+        <textarea id="direccion" formControlName="direccion" placeholder="Ej. Av. América #123" rows="3"></textarea>
       </div>
     </form>
   </div>
 
   <div class="drawer-footer">
-    <button class="btn btn-outline" type="button" (click)="cerrarDrawer()">Cancel</button>
+    <button class="btn btn-outline" type="button" (click)="cerrarDrawer()">Cancelar</button>
     <button class="btn btn-primary" type="submit" form="cliente-form">
-      {{ editingId ? 'Update' : 'Save' }}
+      {{ editingId ? 'Actualizar' : 'Guardar' }}
     </button>
   </div>
 </div>
