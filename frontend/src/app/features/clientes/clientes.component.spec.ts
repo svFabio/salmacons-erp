@@ -10,7 +10,7 @@ describe('ClientesComponent', () => {
   let component: ClientesComponent;
   let fixture: ComponentFixture<ClientesComponent>;
   let httpMock: HttpTestingController;
-  let loggerSpy: { error: jest.Mock; warn: jest.Mock };
+  let loggerSpy: { error: ReturnType<typeof vi.fn>; warn: ReturnType<typeof vi.fn> };
 
   const mockClientes: Cliente[] = [
     {
@@ -27,7 +27,7 @@ describe('ClientesComponent', () => {
   ];
 
   beforeEach(async () => {
-    loggerSpy = { error: jest.fn(), warn: jest.fn() };
+    loggerSpy = { error: vi.fn(), warn: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [ClientesComponent],
@@ -115,7 +115,7 @@ describe('ClientesComponent', () => {
 
     it('should mark form as touched and not submit when invalid', () => {
       component.save();
-      expect(component.form.touched).toBeFalsy();
+      expect(component.form.touched).toBeTruthy();
       expect(component.form.get('nombres')?.touched).toBeTruthy();
     });
 

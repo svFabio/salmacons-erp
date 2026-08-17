@@ -2,13 +2,13 @@ import { LoggerService } from './logger.service';
 
 describe('LoggerService', () => {
   let service: LoggerService;
-  let consoleErrorSpy: jest.SpyInstance;
-  let consoleWarnSpy: jest.SpyInstance;
+  let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+  let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     service = new LoggerService();
-    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
-    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
   });
 
   afterEach(() => {
