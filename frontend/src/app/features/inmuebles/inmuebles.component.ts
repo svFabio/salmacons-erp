@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InmuebleService } from '../../core/services/inmueble.service';
+import { LoggerService } from '../../core/services/logger.service';
 import { Inmueble } from '../../core/models/inmueble.model';
 
 @Component({
@@ -13,12 +14,15 @@ import { Inmueble } from '../../core/models/inmueble.model';
 })
 export class InmueblesComponent implements OnInit {
   private inmuebleService = inject(InmuebleService);
+  private logger = inject(LoggerService);
   private fb = inject(FormBuilder);
 
   inmuebles: Inmueble[] = [];
   loading = true;
   error: string | null = null;
   editingId: string | null = null;
+  showDrawer = false;
+
   form: FormGroup = this.fb.group({
     direccion: ['', Validators.required],
     matricula: [''],
@@ -31,6 +35,18 @@ export class InmueblesComponent implements OnInit {
     this.loadInmuebles();
   }
 
+  onNuevoInmueble(): void {
+    this.editingId = null;
+    this.form.reset();
+    this.showDrawer = true;
+  }
+
+  cerrarDrawer(): void {
+    this.showDrawer = false;
+    this.editingId = null;
+    this.form.reset();
+  }
+
   loadInmuebles(): void {
     this.loading = true;
     this.error = null;
@@ -39,16 +55,12 @@ export class InmueblesComponent implements OnInit {
         this.inmuebles = data;
         this.loading = false;
       },
-      error: () => {
-        this.error = 'Error al cargar inmuebles';
+      error: (err: unknown) => {
+        this.logger.error('InmueblesComponent.loadInmuebles', err);
+        this.error = 'Error loading properties';
         this.loading = false;
       },
     });
-  }
-
-  startCreate(): void {
-    this.editingId = null;
-    this.form.reset({ direccion: '', matricula: '', codigoCatastral: '', superficie: null, descripcion: '' });
   }
 
   startEdit(inmueble: Inmueble): void {
@@ -60,11 +72,11 @@ export class InmueblesComponent implements OnInit {
       superficie: inmueble.superficie ?? null,
       descripcion: inmueble.descripcion ?? '',
     });
+    this.showDrawer = true;
   }
 
   cancelForm(): void {
-    this.editingId = null;
-    this.form.reset();
+    this.cerrarDrawer();
   }
 
   save(): void {
@@ -78,21 +90,23 @@ export class InmueblesComponent implements OnInit {
     if (this.editingId) {
       this.inmuebleService.update(this.editingId, value).subscribe({
         next: () => {
-          this.cancelForm();
+          this.cerrarDrawer();
           this.loadInmuebles();
         },
-        error: () => {
-          this.error = 'Error al actualizar inmueble';
+        error: (err: unknown) => {
+          this.logger.error('InmueblesComponent.save (update)', err);
+          this.error = 'Error updating property';
         },
       });
     } else {
       this.inmuebleService.create(value).subscribe({
         next: () => {
-          this.cancelForm();
+          this.cerrarDrawer();
           this.loadInmuebles();
         },
-        error: () => {
-          this.error = 'Error al crear inmueble';
+        error: (err: unknown) => {
+          this.logger.error('InmueblesComponent.save (create)', err);
+          this.error = 'Error creating property';
         },
       });
     }
@@ -101,8 +115,9 @@ export class InmueblesComponent implements OnInit {
   delete(id: string): void {
     this.inmuebleService.remove(id).subscribe({
       next: () => this.loadInmuebles(),
-      error: () => {
-        this.error = 'Error al eliminar inmueble';
+      error: (err: unknown) => {
+        this.logger.error('InmueblesComponent.delete', err);
+        this.error = 'Error deleting property';
       },
     });
   }
