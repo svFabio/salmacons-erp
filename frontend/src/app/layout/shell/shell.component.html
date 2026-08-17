@@ -2,7 +2,7 @@
   <aside class="salma-sidebar">
     <div class="sidebar-header">
       <div class="logo">
-        <img [src]="brand.logoPath" [alt]="brand.name + ' Logo'" class="logo-icon">
+        <img [src]="brand.logoPath" [alt]="brand.name + ' Logo'" class="logo-icon" />
         <span class="logo-text">{{ brand.name }}</span>
       </div>
       <div class="user-role-badge">{{ role }}</div>
@@ -10,11 +10,18 @@
 
     <nav class="sidebar-nav">
       <!-- ADMIN: todas las épicas -->
-      <ng-container *ngIf="role === 'ADMIN'">
+      @if (role === 'ADMIN') {
         <div class="nav-section">
           <ul>
             <li><a routerLink="/app/inicio" routerLinkActive="active">Inicio</a></li>
-            <li><a routerLink="/app/directorio" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">Directorio</a></li>
+            <li>
+              <a
+                routerLink="/app/directorio"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: false }"
+                >Directorio</a
+              >
+            </li>
           </ul>
         </div>
         <div class="nav-section">
@@ -31,41 +38,45 @@
             <li><a routerLink="/app/usuarios" routerLinkActive="active">Usuarios</a></li>
           </ul>
         </div>
-      </ng-container>
+      }
 
       <!-- ABOGADO: épica 2 -->
-      <ng-container *ngIf="role === 'ABOGADO'">
+      @if (role === 'ABOGADO') {
         <div class="nav-section">
           <ul>
             <li><a routerLink="/app/inicio" routerLinkActive="active">Inicio</a></li>
-            <li><a routerLink="/app/directorio" routerLinkActive="active">Directorio Asignado</a></li>
+            <li>
+              <a routerLink="/app/directorio" routerLinkActive="active">Directorio Asignado</a>
+            </li>
             <li><a routerLink="/app/legal" routerLinkActive="active">Gestión Legal</a></li>
             <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites Legales</a></li>
           </ul>
         </div>
-      </ng-container>
+      }
 
       <!-- ARQUITECTO: épica 3 -->
-      <ng-container *ngIf="role === 'ARQUITECTO'">
+      @if (role === 'ARQUITECTO') {
         <div class="nav-section">
           <ul>
             <li><a routerLink="/app/inicio" routerLinkActive="active">Inicio</a></li>
-            <li><a routerLink="/app/directorio" routerLinkActive="active">Directorio Asignado</a></li>
+            <li>
+              <a routerLink="/app/directorio" routerLinkActive="active">Directorio Asignado</a>
+            </li>
             <li><a routerLink="/app/tecnica" routerLinkActive="active">Gestión Técnica</a></li>
             <li><a routerLink="/app/tramites" routerLinkActive="active">Trámites Técnicos</a></li>
           </ul>
         </div>
-      </ng-container>
+      }
 
       <!-- CLIENTE: épica 5 — solo lectura -->
-      <ng-container *ngIf="role === 'CLIENTE'">
+      @if (role === 'CLIENTE') {
         <div class="nav-section">
           <ul>
             <li><a routerLink="/app/inicio" routerLinkActive="active">Inicio</a></li>
             <li><a routerLink="/app/inmuebles" routerLinkActive="active">Mis Inmuebles</a></li>
           </ul>
         </div>
-      </ng-container>
+      }
     </nav>
 
     <div class="sidebar-footer">

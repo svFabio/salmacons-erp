@@ -4,56 +4,76 @@
     <button class="btn btn-primary" (click)="onNuevoInmueble()">+ Nuevo Inmueble</button>
   </div>
 
-  <div *ngIf="error" class="error-banner">
-    {{ error }}
-    <button (click)="error = null">×</button>
-  </div>
+  @if (error) {
+    <div class="error-banner">
+      {{ error }}
+      <button (click)="error = null">×</button>
+    </div>
+  }
 
-  <div *ngIf="loading" class="loading-state">
-    Cargando...
-  </div>
+  @if (loading) {
+    <div class="loading-state">Cargando...</div>
+  }
 
-  <div *ngIf="!loading && inmuebles.length === 0" class="empty-state">
-    No hay inmuebles registrados.
-  </div>
+  @if (!loading && inmuebles.length === 0) {
+    <div class="empty-state">No hay inmuebles registrados.</div>
+  }
 
-  <div *ngIf="!loading && inmuebles.length > 0" class="card">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Dirección</th>
-          <th>Matrícula</th>
-          <th>Código Catastral</th>
-          <th>Superficie</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let i of inmuebles">
-          <td>{{ i.direccion }}</td>
-          <td>{{ i.matricula || '—' }}</td>
-          <td>{{ i.codigoCatastral || '—' }}</td>
-          <td>{{ i.superficie ? (i.superficie + ' m²') : '—' }}</td>
-          <td class="actions">
-            <button class="btn btn-outline btn-sm" (click)="startEdit(i)">Editar</button>
-            <button class="btn btn-accent btn-sm" (click)="delete(i.id)">Eliminar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  @if (!loading && inmuebles.length > 0) {
+    <div class="card">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Dirección</th>
+            <th>Matrícula</th>
+            <th>Código Catastral</th>
+            <th>Superficie</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (i of inmuebles; track i) {
+            <tr>
+              <td>{{ i.direccion }}</td>
+              <td>{{ i.matricula || '—' }}</td>
+              <td>{{ i.codigoCatastral || '—' }}</td>
+              <td>{{ i.superficie ? i.superficie + ' m²' : '—' }}</td>
+              <td class="actions">
+                <button class="btn btn-outline btn-sm" (click)="startEdit(i)">Editar</button>
+                <button class="btn btn-accent btn-sm" (click)="delete(i.id)">Eliminar</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
 </div>
 
 <!-- Overlay -->
-<div class="salma-drawer-overlay" *ngIf="showDrawer" (click)="cerrarDrawer()"></div>
+@if (showDrawer) {
+  <div class="salma-drawer-overlay" 
+       (click)="cerrarDrawer()" 
+       (keyup.enter)="cerrarDrawer()" 
+       tabindex="0"></div>
+}
 
 <!-- Panel lateral -->
 <div class="salma-drawer" [class.open]="showDrawer">
   <div class="drawer-header">
     <h3>{{ editingId ? 'Editar Inmueble' : 'Nuevo Inmueble' }}</h3>
     <button class="btn-close" (click)="cerrarDrawer()" type="button">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
@@ -64,22 +84,37 @@
     <form [formGroup]="form" id="inmueble-form" (ngSubmit)="save()">
       <div class="input-group">
         <label for="direccion">Dirección *</label>
-        <input id="direccion" type="text" formControlName="direccion" placeholder="Ej. Av. América #123" />
-        <span class="field-error" *ngIf="form.get('direccion')?.invalid && form.get('direccion')?.touched">
-          Campo obligatorio.
-        </span>
+        <input
+          id="direccion"
+          type="text"
+          formControlName="direccion"
+          placeholder="Ej. Av. América #123"
+        />
+        @if (form.get('direccion')?.invalid && form.get('direccion')?.touched) {
+          <span class="field-error"> Campo obligatorio. </span>
+        }
       </div>
 
       <div class="divider"><span>Datos de registro</span></div>
 
       <div class="input-group">
         <label for="matricula">Matrícula Inmobiliaria</label>
-        <input id="matricula" type="text" formControlName="matricula" placeholder="Ej. 7011010012345" />
+        <input
+          id="matricula"
+          type="text"
+          formControlName="matricula"
+          placeholder="Ej. 7011010012345"
+        />
       </div>
 
       <div class="input-group">
         <label for="codigoCatastral">Código Catastral</label>
-        <input id="codigoCatastral" type="text" formControlName="codigoCatastral" placeholder="Ej. 3-0123-4567" />
+        <input
+          id="codigoCatastral"
+          type="text"
+          formControlName="codigoCatastral"
+          placeholder="Ej. 3-0123-4567"
+        />
       </div>
 
       <div class="divider"><span>Detalles</span></div>
@@ -91,7 +126,12 @@
 
       <div class="input-group">
         <label for="descripcion">Descripción</label>
-        <textarea id="descripcion" formControlName="descripcion" placeholder="Descripción adicional del inmueble" rows="3"></textarea>
+        <textarea
+          id="descripcion"
+          formControlName="descripcion"
+          placeholder="Descripción adicional del inmueble"
+          rows="3"
+        ></textarea>
       </div>
     </form>
   </div>

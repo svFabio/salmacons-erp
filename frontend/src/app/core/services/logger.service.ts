@@ -8,12 +8,10 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class LoggerService {
   error(context: string, error: unknown): void {
-    // eslint-disable-next-line no-console
     console.error(`[${context}]`, error);
   }
 
   warn(context: string, message: string): void {
-    // eslint-disable-next-line no-console
     console.warn(`[${context}] ${message}`);
   }
 }

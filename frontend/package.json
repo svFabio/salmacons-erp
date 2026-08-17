@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "echo 'No eslint configured for frontend yet. Add @angular-eslint later.' && exit 0"
+    "lint": "ng lint"
   },
   "private": true,
   "packageManager": "pnpm@11.10.0",
@@ -24,12 +24,17 @@
     "zone.js": "^0.16.2"
   },
   "devDependencies": {
+    "@angular-eslint/builder": "21.4.0",
     "@angular/build": "^21.2.20",
     "@angular/cli": "^21.2.20",
     "@angular/compiler-cli": "^21.2.0",
+    "@eslint/js": "^10.0.1",
+    "angular-eslint": "21.4.0",
+    "eslint": "^10.3.0",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~5.9.2",
+    "typescript-eslint": "8.59.2",
     "vitest": "^4.0.8"
   }
 }

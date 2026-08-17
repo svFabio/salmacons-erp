@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ClienteService } from '../../core/services/cliente.service';
 import { LoggerService } from '../../core/services/logger.service';
 import { Cliente } from '../../core/models/cliente.model';
@@ -8,7 +8,7 @@ import { Cliente } from '../../core/models/cliente.model';
 @Component({
   selector: 'app-clientes',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './clientes.component.html',
   styleUrl: './clientes.component.scss',
 })
@@ -23,7 +23,7 @@ export class ClientesComponent implements OnInit {
   editingId: string | null = null;
   showDrawer = false;
 
-  form: FormGroup = this.fb.group({
+  form = this.fb.group({
     nombres: ['', Validators.required],
     apellidos: ['', Validators.required],
     ci: ['', Validators.required],

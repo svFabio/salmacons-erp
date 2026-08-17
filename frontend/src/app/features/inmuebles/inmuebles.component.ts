@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { InmuebleService } from '../../core/services/inmueble.service';
 import { LoggerService } from '../../core/services/logger.service';
 import { Inmueble } from '../../core/models/inmueble.model';
@@ -8,7 +8,7 @@ import { Inmueble } from '../../core/models/inmueble.model';
 @Component({
   selector: 'app-inmuebles',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './inmuebles.component.html',
   styleUrl: './inmuebles.component.scss',
 })
@@ -23,7 +23,7 @@ export class InmueblesComponent implements OnInit {
   editingId: string | null = null;
   showDrawer = false;
 
-  form: FormGroup = this.fb.group({
+  form = this.fb.group({
     direccion: ['', Validators.required],
     matricula: [''],
     codigoCatastral: [''],
