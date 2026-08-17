@@ -1,0 +1,79 @@
+<div class="inmuebles-container">
+  <div class="table-header">
+    <h3>Inmuebles</h3>
+    <button class="btn btn-primary" (click)="startCreate()">+ Nuevo Inmueble</button>
+  </div>
+
+  <div *ngIf="error" class="error-banner">
+    {{ error }}
+    <button (click)="error = null">×</button>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    Cargando...
+  </div>
+
+  <div *ngIf="!loading && inmuebles.length === 0" class="empty-state">
+    No hay inmuebles registrados.
+  </div>
+
+  <div *ngIf="!loading && inmuebles.length > 0" class="card">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Dirección</th>
+          <th>Matrícula</th>
+          <th>Catastral</th>
+          <th>Superficie</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of inmuebles">
+          <td>{{ i.direccion }}</td>
+          <td>{{ i.matricula || '—' }}</td>
+          <td>{{ i.codigoCatastral || '—' }}</td>
+          <td>{{ i.superficie ? (i.superficie + ' m²') : '—' }}</td>
+          <td class="actions">
+            <button class="btn btn-outline btn-sm" (click)="startEdit(i)">Editar</button>
+            <button class="btn btn-accent btn-sm" (click)="delete(i.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card form-card" *ngIf="editingId !== null || form.touched">
+    <h4>{{ editingId ? 'Editar Inmueble' : 'Nuevo Inmueble' }}</h4>
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="form-grid">
+        <div class="input-group">
+          <label for="direccion">Dirección *</label>
+          <input id="direccion" formControlName="direccion" placeholder="Dirección del inmueble">
+        </div>
+        <div class="input-group">
+          <label for="matricula">Matrícula</label>
+          <input id="matricula" formControlName="matricula" placeholder="Matrícula inmobiliaria">
+        </div>
+        <div class="input-group">
+          <label for="codigoCatastral">Código Catastral</label>
+          <input id="codigoCatastral" formControlName="codigoCatastral" placeholder="Código catastral">
+        </div>
+        <div class="input-group">
+          <label for="superficie">Superficie (m²)</label>
+          <input id="superficie" formControlName="superficie" type="number" placeholder="0">
+        </div>
+      </div>
+      <div class="input-group">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" formControlName="descripcion" rows="3" placeholder="Descripción del inmueble"></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" (click)="cancelForm()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">
+          {{ editingId ? 'Actualizar' : 'Crear' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

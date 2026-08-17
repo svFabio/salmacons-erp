@@ -1,13 +1,13 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Prisma, Usuario } from '@prisma/client';
 import { UsuariosRepository } from './usuarios.repository';
 import { CrearUsuarioDto } from './dto/crear-usuario.dto';
 import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
 import { sinPassword, UsuarioSinPassword } from './usuarios.types';
+import {
+  UsuarioNotFoundError,
+  UsuarioAlreadyExistsError,
+} from '../common/errors/app.error';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class UsuariosService {
       crearUsuarioDto.email,
     );
     if (existing) {
-      throw new ConflictException('Email ya registrado');
+      throw new UsuarioAlreadyExistsError(crearUsuarioDto.email);
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -43,7 +43,7 @@ export class UsuariosService {
 
   async findById(id: string): Promise<UsuarioSinPassword> {
     const usuario = await this.usuariosRepository.findById(id);
-    if (!usuario) throw new NotFoundException('Usuario no encontrado');
+    if (!usuario) throw new UsuarioNotFoundError(id);
     return sinPassword(usuario);
   }
 

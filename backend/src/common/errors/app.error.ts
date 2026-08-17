@@ -26,3 +26,15 @@ export class TipoTramiteNoConfiguradoError extends AppError {
     );
   }
 }
+
+export class UsuarioNotFoundError extends AppError {
+  constructor(identifier: string) {
+    super(`Usuario ${identifier} no encontrado`, 404, 'USUARIO_NOT_FOUND');
+  }
+}
+
+export class UsuarioAlreadyExistsError extends AppError {
+  constructor(email: string) {
+    super(`Email ${email} ya registrado`, 409, 'USUARIO_ALREADY_EXISTS');
+  }
+}

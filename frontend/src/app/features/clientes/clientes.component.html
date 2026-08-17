@@ -1,76 +1,131 @@
-<div class="clientes-header">
-  <div class="search-bar">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-    <input type="text" placeholder="Buscar por nombre, CI o correo..." />
+<div class="clientes-container">
+  <div class="table-header">
+    <h3>Clientes</h3>
+    <button class="btn btn-primary" (click)="startCreate()">+ Nuevo Cliente</button>
   </div>
-  <button class="btn btn-primary">
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-    Nuevo Cliente
-  </button>
-</div>
 
-<div class="card table-container">
-  <table class="salma-table">
-    <thead>
-      <tr>
-        <th>Nombres y Apellidos</th>
-        <th>CI</th>
-        <th>Contacto</th>
-        <th>Dirección</th>
-        <th>Registro</th>
-        <th class="actions-col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Mock Data Rows -->
-      <tr>
-        <td>
-          <div class="user-info">
-            <span class="fw-bold">Juan Carlos Pérez Gómez</span>
-          </div>
-        </td>
-        <td>1234567</td>
-        <td>
-          <div class="contact-info">
-            <span class="text-sm">juan.perez@email.com</span>
-            <span class="text-xs text-muted">+591 71234567</span>
-          </div>
-        </td>
-        <td><span class="text-sm">Av. América #123</span></td>
-        <td><span class="text-sm text-muted">Hace 2 días</span></td>
-        <td class="actions-col">
-          <button class="btn-icon" title="Editar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-          </button>
-          <button class="btn-icon" title="Ver Inmuebles">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="user-info">
-            <span class="fw-bold">María Elena Vargas</span>
-          </div>
-        </td>
-        <td>7654321</td>
-        <td>
-          <div class="contact-info">
-            <span class="text-sm">maria.vargas@email.com</span>
-            <span class="text-xs text-muted">+591 61234567</span>
-          </div>
-        </td>
-        <td><span class="text-sm">Calle Lanza #45</span></td>
-        <td><span class="text-sm text-muted">Hace 1 semana</span></td>
-        <td class="actions-col">
-          <button class="btn-icon" title="Editar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-          </button>
-          <button class="btn-icon" title="Ver Inmuebles">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="error" class="error-banner">
+    {{ error }}
+    <button (click)="error = null">×</button>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    Cargando...
+  </div>
+
+  <div *ngIf="!loading && clientes.length === 0" class="empty-state">
+    No hay clientes registrados.
+  </div>
+
+  <div *ngIf="!loading && clientes.length > 0" class="card">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>CI</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of clientes">
+          <td>{{ c.nombres }} {{ c.apellidos }}</td>
+          <td>{{ c.ci }}</td>
+          <td>{{ c.email || '—' }}</td>
+          <td>{{ c.telefono || '—' }}</td>
+          <td class="actions">
+            <button class="btn btn-outline btn-sm" (click)="startEdit(c)">Editar</button>
+            <button class="btn btn-accent btn-sm" (click)="delete(c.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Drawer / Modal Lateral -->
+  <div class="salma-drawer-overlay" *ngIf="showDrawer" (click)="cerrarDrawer()"></div>
+  <div class="salma-drawer" [class.open]="showDrawer">
+    <div class="drawer-header">
+      <h3>Nuevo Cliente</h3>
+      <button class="btn-close" (click)="cerrarDrawer()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    
+    <div class="drawer-body">
+      <form class="salma-form">
+        <div class="input-group">
+          <label>Nombres *</label>
+          <input type="text" placeholder="Ej. Juan Carlos" />
+        </div>
+        <div class="input-group">
+          <label>Apellidos *</label>
+          <input type="text" placeholder="Ej. Pérez Gómez" />
+        </div>
+        <div class="input-group">
+          <label>Carnet de Identidad (CI) *</label>
+          <input type="text" placeholder="Ej. 1234567" />
+        </div>
+        
+        <div class="divider"><span>Opcional</span></div>
+        
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" placeholder="correo@ejemplo.com" />
+        </div>
+        <div class="input-group">
+          <label>Teléfono</label>
+          <input type="tel" placeholder="+591 70000000" />
+        </div>
+        <div class="input-group">
+          <label>Dirección</label>
+          <textarea placeholder="Ej. Av. América #123" rows="3"></textarea>
+        </div>
+      </form>
+    </div>
+
+    <div class="drawer-footer">
+      <button class="btn btn-outline" (click)="cerrarDrawer()">Cancelar</button>
+      <button class="btn btn-primary">Guardar Cliente</button>
+    </div>
+  </div>
+
+  <div class="card form-card" *ngIf="editingId !== null || form.touched">
+    <h4>{{ editingId ? 'Editar Cliente' : 'Nuevo Cliente' }}</h4>
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="form-grid">
+        <div class="input-group">
+          <label for="nombres">Nombres *</label>
+          <input id="nombres" formControlName="nombres" placeholder="Nombres">
+        </div>
+        <div class="input-group">
+          <label for="apellidos">Apellidos *</label>
+          <input id="apellidos" formControlName="apellidos" placeholder="Apellidos">
+        </div>
+        <div class="input-group">
+          <label for="ci">CI *</label>
+          <input id="ci" formControlName="ci" placeholder="Carnet de identidad">
+        </div>
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input id="email" formControlName="email" type="email" placeholder="email@ejemplo.com">
+        </div>
+        <div class="input-group">
+          <label for="telefono">Teléfono</label>
+          <input id="telefono" formControlName="telefono" placeholder="555-0000">
+        </div>
+        <div class="input-group">
+          <label for="direccion">Dirección</label>
+          <input id="direccion" formControlName="direccion" placeholder="Dirección">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" (click)="cancelForm()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">
+          {{ editingId ? 'Actualizar' : 'Crear' }}
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

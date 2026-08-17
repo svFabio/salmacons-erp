@@ -1,24 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
-import { ClientesComponent } from './clientes.component';
-import { Cliente } from '../../core/models/cliente.model';
+import { InmueblesComponent } from './inmuebles.component';
+import { Inmueble } from '../../core/models/inmueble.model';
 import { environment } from '../../../environments/environment';
 
-describe('ClientesComponent', () => {
-  let component: ClientesComponent;
-  let fixture: ComponentFixture<ClientesComponent>;
+describe('InmueblesComponent', () => {
+  let component: InmueblesComponent;
+  let fixture: ComponentFixture<InmueblesComponent>;
   let httpMock: HttpTestingController;
 
-  const mockClientes: Cliente[] = [
+  const mockInmuebles: Inmueble[] = [
     {
       id: '1',
-      nombres: 'Juan',
-      apellidos: 'Perez',
-      ci: '1234567',
-      email: 'juan@test.com',
-      telefono: '555-0001',
-      direccion: 'Calle 1',
+      direccion: 'Av. Principal 456',
+      matricula: 'MAT-001',
+      codigoCatastral: 'CC-001',
+      superficie: 120,
+      descripcion: 'Departamento 3 ambientes',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
     },
@@ -26,11 +25,11 @@ describe('ClientesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ClientesComponent],
+      imports: [InmueblesComponent],
       providers: [provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ClientesComponent);
+    fixture = TestBed.createComponent(InmueblesComponent);
     component = fixture.componentInstance;
     httpMock = TestBed.inject(HttpTestingController);
   });
@@ -43,24 +42,24 @@ describe('ClientesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load clientes on init', () => {
+  it('should load inmuebles on init', () => {
     fixture.detectChanges();
 
-    const req = httpMock.expectOne(`${environment.apiUrl}/clientes`);
+    const req = httpMock.expectOne(`${environment.apiUrl}/inmuebles`);
     expect(req.request.method).toBe('GET');
-    req.flush(mockClientes);
+    req.flush(mockInmuebles);
 
-    expect(component.clientes.length).toBe(1);
+    expect(component.inmuebles.length).toBe(1);
     expect(component.loading).toBeFalsy();
   });
 
   it('should show error when load fails', () => {
     fixture.detectChanges();
 
-    const req = httpMock.expectOne(`${environment.apiUrl}/clientes`);
+    const req = httpMock.expectOne(`${environment.apiUrl}/inmuebles`);
     req.flush('Error', { status: 500, statusText: 'Server Error' });
 
-    expect(component.error).toBe('Error al cargar clientes');
+    expect(component.error).toBe('Error al cargar inmuebles');
     expect(component.loading).toBeFalsy();
   });
 });

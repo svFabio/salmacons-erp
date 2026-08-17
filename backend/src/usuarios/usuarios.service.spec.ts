@@ -1,8 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsuariosService } from './usuarios.service';
 import { UsuariosRepository } from './usuarios.repository';
-import { ConflictException, NotFoundException } from '@nestjs/common';
 import { RolUsuario, Usuario } from '@prisma/client';
+import {
+  UsuarioAlreadyExistsError,
+  UsuarioNotFoundError,
+} from '../common/errors/app.error';
 
 describe('UsuariosService', () => {
   let service: UsuariosService;
@@ -53,7 +56,7 @@ describe('UsuariosService', () => {
   });
 
   describe('create', () => {
-    it('should throw ConflictException if email exists', async () => {
+    it('should throw UsuarioAlreadyExistsError if email exists', async () => {
       findByEmailMock.mockResolvedValue(mockUsuario);
 
       await expect(
@@ -63,7 +66,7 @@ describe('UsuariosService', () => {
           nombre: 'Test',
           apellido: 'User',
         }),
-      ).rejects.toThrow(ConflictException);
+      ).rejects.toThrow(UsuarioAlreadyExistsError);
     });
 
     it('should create a user without exposing the password hash', async () => {
@@ -103,22 +106,33 @@ describe('UsuariosService', () => {
       expect(result).not.toHaveProperty('passwordHash');
     });
 
-    it('should throw NotFoundException if user not found', async () => {
+    it('should throw UsuarioNotFoundError if user not found', async () => {
       findByIdMock.mockResolvedValue(null);
 
-      await expect(service.findById('2')).rejects.toThrow(NotFoundException);
+      await expect(service.findById('2')).rejects.toThrow(UsuarioNotFoundError);
     });
   });
 
   describe('update', () => {
     it('should update the user and return it without the password hash', async () => {
       findByIdMock.mockResolvedValue(mockUsuario);
-      updateMock.mockResolvedValue({ ...mockUsuario, nombre: 'Updated' });
+      updateMock.mockResolvedValue({
+        ...mockUsuario,
+        nombre: 'Nuevo',
+      });
 
-      const result = await service.update('1', { nombre: 'Updated' });
+      const result = await service.update('1', { nombre: 'Nuevo' });
 
+      expect(result).toHaveProperty('nombre', 'Nuevo');
       expect(result).not.toHaveProperty('passwordHash');
-      expect(result.nombre).toBe('Updated');
+      expect(updateMock).toHaveBeenCalled();
+    });
+
+    it('should throw UsuarioNotFoundError if user does not exist during update', async () => {
+      findByIdMock.mockResolvedValue(null);
+      await expect(service.update('99', { nombre: 'Nuevo' })).rejects.toThrow(
+        UsuarioNotFoundError,
+      );
     });
   });
 });
